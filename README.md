@@ -1,6 +1,8 @@
 # coding
 
-An implementation of Bret Victor's neat live game editor in Clojurescript
+
+Transcience 
+
 
 ## Usage
 
