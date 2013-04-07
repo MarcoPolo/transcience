@@ -2730,23 +2730,23 @@ cljs.core._hash["boolean"] = function(a) {
 cljs.core.IWithMeta["function"] = !0;
 cljs.core._with_meta["function"] = function(a, b) {
   return cljs.core.with_meta.call(null, function() {
-    if(void 0 === cljs.core.t2871) {
-      cljs.core.t2871 = {};
-      cljs.core.t2871 = function(a, b, c) {
+    if(void 0 === cljs.core.t2969) {
+      cljs.core.t2969 = {};
+      cljs.core.t2969 = function(a, b, c) {
         this.meta = a;
         this.f = b;
-        this.meta2872 = c;
+        this.meta2970 = c;
         this.cljs$lang$protocol_mask$partition1$ = 0;
         this.cljs$lang$protocol_mask$partition0$ = 393217
       };
-      cljs.core.t2871.cljs$lang$type = !0;
-      cljs.core.t2871.cljs$lang$ctorPrSeq = function() {
-        return cljs.core.list.call(null, "cljs.core/t2871")
+      cljs.core.t2969.cljs$lang$type = !0;
+      cljs.core.t2969.cljs$lang$ctorPrSeq = function() {
+        return cljs.core.list.call(null, "cljs.core/t2969")
       };
-      cljs.core.t2871.cljs$lang$ctorPrWriter = function(a, b) {
-        return cljs.core._write.call(null, b, "cljs.core/t2871")
+      cljs.core.t2969.cljs$lang$ctorPrWriter = function(a, b) {
+        return cljs.core._write.call(null, b, "cljs.core/t2969")
       };
-      var c = cljs.core.t2871.prototype, d = function(a, b) {
+      var c = cljs.core.t2969.prototype, d = function(a, b) {
         return cljs.core.apply.call(null, a.f, b)
       }, e = function(a, b) {
         var a = this, c = null;
@@ -2760,19 +2760,19 @@ cljs.core._with_meta["function"] = function(a, b) {
       };
       e.cljs$lang$arity$variadic = d;
       c.call = e;
-      cljs.core.t2871.prototype.apply = function(a, b) {
+      cljs.core.t2969.prototype.apply = function(a, b) {
         a = this;
         return a.call.apply(a, [a].concat(b.slice()))
       };
-      cljs.core.t2871.prototype.cljs$core$Fn$ = !0;
-      cljs.core.t2871.prototype.cljs$core$IMeta$_meta$arity$1 = function() {
-        return this.meta2872
+      cljs.core.t2969.prototype.cljs$core$Fn$ = !0;
+      cljs.core.t2969.prototype.cljs$core$IMeta$_meta$arity$1 = function() {
+        return this.meta2970
       };
-      cljs.core.t2871.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(a, b) {
-        return new cljs.core.t2871(this.meta, this.f, b)
+      cljs.core.t2969.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = function(a, b) {
+        return new cljs.core.t2969(this.meta, this.f, b)
       }
     }
-    return new cljs.core.t2871(b, a, null)
+    return new cljs.core.t2969(b, a, null)
   }(), b)
 };
 cljs.core.IMeta["function"] = !0;
@@ -14278,8 +14278,6 @@ jayq.core.ajax_m = cljs.core.ObjMap.fromObject(["\ufdd0'return", "\ufdd0'bind", 
 }, "\ufdd0'zero":cljs.core.identity});
 var new_transcience = {engine:{}};
 new_transcience.engine.stage = new createjs.Stage("demoCanvas");
-new_transcience.engine.stage.addChild(new_transcience.engine.circle);
-new_transcience.engine.stage.update();
 new_transcience.engine.update_screen_60hz = function() {
   return setInterval(function() {
     return new_transcience.engine.stage.update()
@@ -14302,16 +14300,20 @@ new_transcience.engine.add_and_update_stage = function(a) {
   return new_transcience.engine.stage.update()
 };
 new_transcience.engine.create_square = function(a) {
-  var b = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, a = cljs.core._lookup.call(null, b, "\ufdd0'color", "blue"), c = cljs.core._lookup.call(null, b, "\ufdd0'height", 10), d = cljs.core._lookup.call(null, b, "\ufdd0'width", 10), e = cljs.core._lookup.call(null, b, "\ufdd0'y", 0), b = cljs.core._lookup.call(null, b, "\ufdd0'x", 0), f = new createjs.Shape;
+  var b = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, a = cljs.core._lookup.call(null, b, "\ufdd0'color", "blue"), c = cljs.core._lookup.call(null, b, "\ufdd0'h", 10), d = cljs.core._lookup.call(null, b, "\ufdd0'w", 10), e = cljs.core._lookup.call(null, b, "\ufdd0'y", 0), b = cljs.core._lookup.call(null, b, "\ufdd0'x", 0), f = new createjs.Shape;
   f.graphics.beginFill(a).drawRect(b, e, d, c);
   new_transcience.engine.add_and_update_stage.call(null, f);
-  return new_transcience.engine.register_shape_atom.call(null, cljs.core.atom.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'easel-shape", "\ufdd0'x", "\ufdd0'y"], {"\ufdd0'easel-shape":f, "\ufdd0'x":b, "\ufdd0'y":e})))
+  return new_transcience.engine.register_shape_atom.call(null, cljs.core.atom.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'easel-shape", "\ufdd0'x", "\ufdd0'h", "\ufdd0'w", "\ufdd0'y"], {"\ufdd0'easel-shape":f, "\ufdd0'x":b, "\ufdd0'h":c, "\ufdd0'w":d, "\ufdd0'y":e})))
 };
 new_transcience.engine.create_circle = function(a) {
-  var b = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, a = cljs.core._lookup.call(null, b, "\ufdd0'color", "red"), c = cljs.core._lookup.call(null, b, "\ufdd0'radius", 10), d = cljs.core._lookup.call(null, b, "\ufdd0'y", 0), b = cljs.core._lookup.call(null, b, "\ufdd0'x", 0), e = new createjs.Shape;
+  var b = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, a = cljs.core._lookup.call(null, b, "\ufdd0'color", "red"), c = cljs.core._lookup.call(null, b, "\ufdd0'r", 10), d = cljs.core._lookup.call(null, b, "\ufdd0'y", 0), b = cljs.core._lookup.call(null, b, "\ufdd0'x", 0), e = new createjs.Shape;
   e.graphics.beginFill(a).drawCircle(b, d, c);
   new_transcience.engine.add_and_update_stage.call(null, e);
-  return new_transcience.engine.register_shape_atom.call(null, cljs.core.atom.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'easel-shape", "\ufdd0'x", "\ufdd0'y"], {"\ufdd0'easel-shape":e, "\ufdd0'x":b, "\ufdd0'y":d})))
+  return new_transcience.engine.register_shape_atom.call(null, cljs.core.atom.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'easel-shape", "\ufdd0'x", "\ufdd0'r", "\ufdd0'y"], {"\ufdd0'easel-shape":e, "\ufdd0'x":b, "\ufdd0'r":c, "\ufdd0'y":d})))
+};
+new_transcience.engine.destroy_shape = function(a) {
+  new_transcience.engine.stage.removeChild((new cljs.core.Keyword("\ufdd0'easel-shape")).call(null, a));
+  return new_transcience.engine.stage.update()
 };
 new_transcience.engine.move_item_to = function move_item_to(b, c, d, e) {
   clearTimeout((new cljs.core.Keyword("\ufdd0'movement")).call(null, cljs.core.deref.call(null, b), 0));
@@ -19911,6 +19913,93 @@ console.log("hello world");
 jayq.core.inner.call(null, jayq.core.$.call(null, "\ufdd0'#stuff"), "Changed from cljs!");
 clojure.browser.repl.connect.call(null, "http://localhost:9001/repl");
 new_transcience.core.ball = new_transcience.engine.create_circle.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'color"], {"\ufdd0'color":"black"}));
+new_transcience.core.game_map_loop = cljs.core.atom.call(null, cljs.core.ObjMap.EMPTY);
+new_transcience.core.run_functions = function(a) {
+  for(a = cljs.core.seq.call(null, a);;) {
+    if(a) {
+      cljs.core.first.call(null, a).call(null), a = cljs.core.next.call(null, a)
+    }else {
+      return null
+    }
+  }
+};
+new_transcience.core.run_game_loop = function() {
+  return new_transcience.core.run_functions.call(null, cljs.core.vals.call(null, cljs.core.deref.call(null, new_transcience.core.game_map_loop)))
+};
+new_transcience.core.game_loop = setInterval(new_transcience.core.run_game_loop, 1E3);
+new_transcience.core.__GT_key = cljs.core.PersistentArrayMap.fromArrays([37, 38, 39, 40, 32], ["\ufdd0'left", "\ufdd0'down", "\ufdd0'right", "\ufdd0'up", "\ufdd0'space"]);
+new_transcience.core.input = cljs.core.atom.call(null, cljs.core.ObjMap.EMPTY);
+new_transcience.core.blocks = cljs.core.atom.call(null, cljs.core.ObjMap.EMPTY);
+new_transcience.core.make_block = function(a, b) {
+  var c = cljs.core.deref.call(null, new_transcience.core.blocks).call(null, cljs.core.PersistentVector.fromArray([a, b], !0));
+  return cljs.core.truth_(c) ? (new_transcience.engine.destroy_shape.call(null, c), cljs.core.swap_BANG_.call(null, new_transcience.core.blocks, cljs.core.dissoc, cljs.core.PersistentVector.fromArray([a, b], !0))) : cljs.core.swap_BANG_.call(null, new_transcience.core.blocks, cljs.core.assoc, cljs.core.PersistentVector.fromArray([a, b], !0), cljs.core.deref.call(null, new_transcience.engine.create_square.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'x", "\ufdd0'y", "\ufdd0'h", "\ufdd0'w"], {"\ufdd0'x":30 * 
+  b, "\ufdd0'y":30 * a, "\ufdd0'h":30, "\ufdd0'w":30}))))
+};
+new_transcience.core.make_block.call(null, 4, 3);
+new_transcience.core.make_block.call(null, 5, 5);
+new_transcience.core.input_QMARK_ = function(a) {
+  return cljs.core.deref.call(null, new_transcience.core.input).call(null, a)
+};
+new_transcience.core.bottom_right = function(a) {
+  var b = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, a = cljs.core._lookup.call(null, b, "\ufdd0'r", null), c = cljs.core._lookup.call(null, b, "\ufdd0'h", null), d = cljs.core._lookup.call(null, b, "\ufdd0'w", null), e = cljs.core._lookup.call(null, b, "\ufdd0'y", null), b = cljs.core._lookup.call(null, b, "\ufdd0'x", null);
+  return cljs.core.truth_(a) ? cljs.core.ObjMap.fromObject(["\ufdd0'x", "\ufdd0'y"], {"\ufdd0'x":b + a, "\ufdd0'y":e + a}) : cljs.core.ObjMap.fromObject(["\ufdd0'x", "\ufdd0'y"], {"\ufdd0'x":b + d, "\ufdd0'y":e + c})
+};
+new_transcience.core.top_left = function(a) {
+  var b = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, a = cljs.core._lookup.call(null, b, "\ufdd0'r", null), c = cljs.core._lookup.call(null, b, "\ufdd0'y", null), b = cljs.core._lookup.call(null, b, "\ufdd0'x", null);
+  return cljs.core.truth_(a) ? cljs.core.ObjMap.fromObject(["\ufdd0'x", "\ufdd0'y"], {"\ufdd0'x":b - a, "\ufdd0'y":c - a}) : cljs.core.ObjMap.fromObject(["\ufdd0'x", "\ufdd0'y"], {"\ufdd0'x":b, "\ufdd0'y":c})
+};
+new_transcience.core.collision_QMARK_ = function(a, b) {
+  var c = new_transcience.core.bottom_right.call(null, a), d = new_transcience.core.top_left.call(null, a), e = new_transcience.core.bottom_right.call(null, b), f = new_transcience.core.top_left.call(null, b), g;
+  g = (g = (new cljs.core.Keyword("\ufdd0'y")).call(null, d) < (new cljs.core.Keyword("\ufdd0'y")).call(null, e)) ? (new cljs.core.Keyword("\ufdd0'y")).call(null, f) < (new cljs.core.Keyword("\ufdd0'y")).call(null, c) : g;
+  return cljs.core.truth_(g) ? (d = (new cljs.core.Keyword("\ufdd0'x")).call(null, d) < (new cljs.core.Keyword("\ufdd0'x")).call(null, e)) ? (new cljs.core.Keyword("\ufdd0'x")).call(null, f) < (new cljs.core.Keyword("\ufdd0'x")).call(null, c) : d : g
+};
+new_transcience.core.colliding_QMARK_ = function(a) {
+  var b = cljs.core.vals.call(null, cljs.core.deref.call(null, new_transcience.core.blocks));
+  return cljs.core.first.call(null, cljs.core.filter.call(null, function(b) {
+    return new_transcience.core.collision_QMARK_.call(null, a, b)
+  }, b))
+};
+new_transcience.core.move = function(a) {
+  var b = cljs.core.truth_(new_transcience.core.input_QMARK_.call(null, "\ufdd0'left")) ? -2 : cljs.core.truth_(new_transcience.core.input_QMARK_.call(null, "\ufdd0'right")) ? 2 : 0, c = cljs.core.update_in.call(null, a, cljs.core.PersistentVector.fromArray(["\ufdd0'x"], !0), cljs.core._PLUS_, b);
+  if(0 === b) {
+    return a
+  }
+  var d = new_transcience.core.colliding_QMARK_.call(null, c);
+  return cljs.core.truth_(d) ? (b = 0 > b ? (new cljs.core.Keyword("\ufdd0'x")).call(null, d) + (new cljs.core.Keyword("\ufdd0'w")).call(null, d) + (new cljs.core.Keyword("\ufdd0'r")).call(null, a) : (new cljs.core.Keyword("\ufdd0'x")).call(null, d) - (new cljs.core.Keyword("\ufdd0'r")).call(null, a), cljs.core.assoc.call(null, a, "\ufdd0'x", b)) : c
+};
+new_transcience.core.reset = function(a) {
+  return 650 < (new cljs.core.Keyword("\ufdd0'y")).call(null, a) ? cljs.core.assoc.call(null, cljs.core.assoc.call(null, cljs.core.assoc.call(null, a, "\ufdd0'x", 30), "\ufdd0'y", 30), "\ufdd0'vy", 0) : a
+};
+new_transcience.core.gravity = function(a) {
+  a = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a;
+  cljs.core._lookup.call(null, a, "\ufdd0'y", null);
+  var b;
+  b = cljs.core._lookup.call(null, a, "\ufdd0'vy", null);
+  b = cljs.core.truth_(b) ? b : 0;
+  var c = b + 0.2;
+  b = 0 > c ? "\ufdd0'up" : "\ufdd0'down";
+  var d = cljs.core.update_in.call(null, a, cljs.core.PersistentVector.fromArray(["\ufdd0'y"], !0), cljs.core._PLUS_, c), e = new_transcience.core.colliding_QMARK_.call(null, d);
+  return cljs.core.truth_(e) ? (c = cljs.core._EQ_.call(null, b, "\ufdd0'up") ? (new cljs.core.Keyword("\ufdd0'y")).call(null, e) + (new cljs.core.Keyword("\ufdd0'h")).call(null, e) + (new cljs.core.Keyword("\ufdd0'r")).call(null, a) : (new cljs.core.Keyword("\ufdd0'y")).call(null, e) - (new cljs.core.Keyword("\ufdd0'r")).call(null, a), cljs.core.assoc.call(null, a, "\ufdd0'y", c, "\ufdd0'jumping", cljs.core._EQ_.call(null, b, "\ufdd0'up"), "\ufdd0'vy", 0)) : cljs.core.assoc.call(null, d, "\ufdd0'vy", 
+  c)
+};
+new_transcience.core.jump = function(a) {
+  return cljs.core.truth_(function() {
+    var b = new_transcience.core.input_QMARK_.call(null, "\ufdd0'space");
+    return cljs.core.truth_(b) ? (b = cljs.core.not.call(null, (new cljs.core.Keyword("\ufdd0'jumping")).call(null, a))) ? 0 === (new cljs.core.Keyword("\ufdd0'vy")).call(null, a) : b : b
+  }()) ? cljs.core.assoc.call(null, a, "\ufdd0'vy", -10, "\ufdd0'jumping", !0) : a
+};
+new_transcience.core.update_player = function(a) {
+  return new_transcience.core.reset.call(null, new_transcience.core.jump.call(null, new_transcience.core.move.call(null, new_transcience.core.gravity.call(null, a))))
+};
+document.onkeydown = function(a) {
+  return cljs.core.swap_BANG_.call(null, new_transcience.core.input, cljs.core.assoc, new_transcience.core.__GT_key.call(null, a.keyCode), !0)
+};
+document.onkeyup = function(a) {
+  return cljs.core.swap_BANG_.call(null, new_transcience.core.input, cljs.core.assoc, new_transcience.core.__GT_key.call(null, a.keyCode), !1)
+};
+new_transcience.core.game = setInterval(function() {
+  return cljs.core.swap_BANG_.call(null, new_transcience.core.ball, new_transcience.core.update_player)
+}, 5);
 var manager_task = {client:{}};
 manager_task.client.demo = {};
 console.log("inside demo");

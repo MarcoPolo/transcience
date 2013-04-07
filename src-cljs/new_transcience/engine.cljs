@@ -4,9 +4,9 @@
 (def stage
   (createjs/Stage. "demoCanvas"))
 
-(.addChild stage circle)
+;;(.addChild stage circle)
 
-(.update stage)
+;; (.update stage)
 
 
 (defn update-screen-60hz []
@@ -37,28 +37,36 @@
   (.update stage))
 
 ;; Returns an atom containing the state of that square
-(defn create-square [{:keys [x y width height color] :or {x 0 y 0 width 10 height 10 color "blue"}}]
+(defn create-square [{:keys [x y w h color] :or {x 0 y 0 w 10 h 10 color "blue"}}]
   (let [square (createjs/Shape.)]
     (-> (.-graphics square)
       (.beginFill color)
-      (.drawRect x y width height))
+      (.drawRect x y w h))
     (add-and-update-stage square)
     (register-shape-atom
       (atom {:easel-shape square
              :x x
+             :h h
+             :w w
              :y y}))))
 
-(defn create-circle [{:keys [x y radius color] :or {x 0 y 0 radius 10 color "red"}}]
+(defn create-circle [{:keys [x y r color] :or {x 0 y 0 r 10 color "red"}}]
   (let [circle (createjs/Shape.)]
     (-> 
         (.-graphics circle)
         (.beginFill color)
-        (.drawCircle x y radius))
+        (.drawCircle x y r))
     (add-and-update-stage circle)
     (register-shape-atom 
       (atom {:easel-shape circle
              :x x
+             :r r
              :y y}))))
+
+(defn destroy-shape [shape]
+  (.removeChild stage (:easel-shape shape))
+  (.update stage))
+
 
 (defn move-item-to [entity x y speed]
   (js/clearTimeout (:movement @entity 0))
