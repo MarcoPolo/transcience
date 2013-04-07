@@ -1,5 +1,5 @@
 (ns new-transcience.core
-  (:use [jayq.core :only [$ css inner]])
+  (:use [jayq.core :only [$ css inner ajax]])
   (:require [clojure.browser.repl :as repl]
              [new-transcience.engine :as engine]))
 
@@ -34,6 +34,7 @@
    38 :down
    39 :right
    40 :up
+   16 :phase
    32 :space})
 
 (def input (atom {}))
@@ -46,8 +47,21 @@
       (swap! blocks dissoc [row column]))
     (swap! blocks assoc [row column] @(engine/create-square {:x (* 30 column) :y (* 30 row) :h 30 :w 30}))))
 
-(make-block 4 3)
-(make-block 5 5)
+(defn ->30th [v]
+  (Math/floor (/ v 30)))
+
+(defn parse-canvas-click [e]
+  (let [x (.-pageX e)
+        y (.-pageY e)
+        offset (.offset ($ "#demoCanvas"))
+        left-offset (.-left offset)
+        top-offset (.-top offset)
+        c (->30th (- x left-offset))
+        r (->30th (- y top-offset))]
+    (make-block r c)))
+
+(set! (.-onclick js/document) parse-canvas-click)
+
 
 (defn input? [key] (@input key))
 
@@ -83,74 +97,103 @@
       (and (< (:x tl) (:x br2))
            (< (:x tl2) (:x br))))))
 
-
 (defn colliding? [me] 
   (let [blocks-list (vals @blocks)]
-    (first (filter #(collision? me %) blocks-list))))
+    (if (:phasing me)
+      (first (filter #(and (:impassable %) (collision? me %)) blocks-list))
+      (first (filter #(collision? me %) blocks-list)))))
 
 (comment
   (engine/create-square {:h 100 :w 100 :x 100 :y 100})
   @ball
+  (swap! ball assoc :x 0 :y 0)
   (colliding? @ball)
 
 
   )
 
-(defn move [me]
-  (let [speed 2
-        vx (cond
-             (input? :left) (- speed)
-             (input? :right) speed
-             :else 0)
-        moved (update-in me [:x] + vx)]
-    (if (zero? vx) 
-      me
-      (if-let [block (colliding? moved)]
-        (let [block-edge (if (< vx 0)
-                           (+ (:x block) (:w block) (:r me))
-                           (- (:x block) (:r me)))]
 
-          (assoc me :x block-edge))
-        moved))))
+(defn move [{:keys [vx x] :as me}]
+  (let [acceleration 0.5
+        max-speed 20
+        decelartion 2
+        vx (or vx 0)
+        neue-vx (cond
+                  (:phasing me) vx
+                  (input? :left) (max (- max-speed) (- vx acceleration))
+                  (input? :right) (min max-speed (+ vx acceleration))
+                  :else (if (< -2 vx 2) 0 (if (pos? vx) (- vx decelartion) (+ vx decelartion))))
+        moved (update-in me [:x] + neue-vx)]
+    (if-let [block (colliding? moved)]
+      (let [block-edge (if (< neue-vx 0)
+                         (+ (:x block) (:w block) (:r me))
+                         (- (:x block) (:r me)))]
+        (assoc me :x block-edge
+                  :vx 0))
+      (-> moved
+          (assoc :vx neue-vx)))))
 
 (defn reset [me]
   (if (> (:y me) 650)
     (-> me
-        (assoc :x 30)
-        (assoc :y 30)
+        (assoc :x 50)
+        (assoc :y 50)
         (assoc :vy 0))
     me))
 
 (defn gravity [{:keys [vy y] :as me}]
-  (let [g 0.2
+  (let [g 0.8
         vy (or vy 0)
-        neue-vy (+ vy g)
+        neue-vy (if (:phasing me) vy (+ vy g))
         dir (if (< neue-vy 0) :up :down)
         moved (update-in me [:y] + neue-vy)]
     (if-let [block (colliding? moved)]
       (let [block-edge (if (= dir :up)
-                          (+ (:y block) (:h block) (:r me))
-                          (- (:y block) (:r me)))]
+                         (+ (:y block) (:h block) (:r me))
+                         (- (:y block) (:r me)))]
         (assoc me :y block-edge
-                :jumping (= dir :up)
-                :vy 0))
+               :jumping (= dir :up)
+               :vy 0))
       (-> moved
-          (assoc :vy neue-vy)))))
+        (assoc :vy neue-vy)))))
 
 (defn jump [me]
   (let [speed -10]
     (if (and (input? :space)
-              (and (not (:jumping me)) (zero? (:vy me))))
+             (and (not (:jumping me)) (zero? (:vy me)))
+             (not (:phasing me)))
       (assoc me :vy speed
               :jumping true)
       me)))
 
+
+(defn phase [me]
+  (let [max-phasing-cycles 20
+        cool-down-cycles 20]
+    (if (:phasing me) 
+      (if (> max-phasing-cycles (:phasing-count me))
+        (update-in me [:phasing-count] inc)
+        (assoc me :phasing false :phasing-count 0 :cool-down-count 0))
+      (if (> cool-down-cycles (:cool-down-count me))
+        (update-in me [:cool-down-count] inc)
+        (if (input? :phase)
+          (assoc me :phasing true :cool-down-count 0 :phasing-count 0)
+          me)))))
+
+
+(comment 
+  (phase @ball)
+  (def zxcv (js/setInterval #(println @ball) 1e3))
+  (js/clearInterval zxcv)
+  @ball
+)
 
 (defn update-player [me]
   (-> me
       (gravity)
       (move)
       (jump)
+      (phase)
       (reset)
       ))
 
@@ -159,7 +202,18 @@
 
 (set! (.-onkeyup js/document) #(swap! input assoc (->key (.-keyCode %)) false))
 
-(def game (js/setInterval #(swap! ball update-player) 5))
+(def game (js/setInterval #(swap! ball update-player) 15))
+
+(defn build-demo-level []
+  (let [call (ajax "/blocks" {:type "get" })]
+    (.done call #(let [server-blocks (vals (cljs.reader/read-string %))]
+                   (doseq [old-block (keys @blocks)]
+                     (apply make-block old-block))
+                   (doseq [new-block server-blocks]
+                     (apply make-block new-block))))))
+
+(build-demo-level)
+
 
 (comment
 
@@ -237,27 +291,8 @@
   (defn keydown [direction]
     (swap! game-map-loop assoc :player-motion (move-player-fn direction)))
       
-
-  (set! (.-title js/document) "asdfff")
-
-  (set! (.-onkeydown js/document) check-key)
-
-
-  (defn ->30th [v]
-    (Math/floor (/ v 30)))
-
-  (defn parse-canvas-click [e]
-    (let [x (.-pageX e)
-          y (.-pageY e)
-          offset (.offset ($ "#demoCanvas"))
-          left-offset (.-left offset)
-          top-offset (.-top offset)
-          c (->30th (- x left-offset))
-          r (->30th (- y top-offset))]
-      (make-block r c)))
-
-  (set! (.-onclick js/document) parse-canvas-click)
-
+  (.post js/$ "/saveBlocks" (str (keys @blocks)))
+  (ajax "/saveBlocks" {:type "post" :data {:blocks (keys @blocks)}})
 
 
   )
