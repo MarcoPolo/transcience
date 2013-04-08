@@ -1,16 +1,10 @@
 (ns new-transcience.core
-  (:use [jayq.core :only [$ css inner ajax]])
+  (:use [jayq.core :only [$ css inner ajax bind]])
+  (:use-macros [cljs.core :only [this-as]])
   (:require [clojure.browser.repl :as repl]
              [new-transcience.engine :as engine]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
-
 (.log js/console "hello world")
-
-(inner ($ :#stuff) "Changed from cljs!")
 
 ;; So we can connect to the repl server
 (repl/connect "http://localhost:9001/repl")
@@ -50,6 +44,9 @@
 (defn ->30th [v]
   (Math/floor (/ v 30)))
 
+(defn coords->block [x y]
+  (make-block (->30th x) (->30th y)))
+
 (defn parse-canvas-click [e]
   (let [x (.-pageX e)
         y (.-pageY e)
@@ -58,6 +55,7 @@
         top-offset (.-top offset)
         c (->30th (- x left-offset))
         r (->30th (- y top-offset))]
+    (.log js/console "making" r c)
     (make-block r c)))
 
 (set! (.-onclick js/document) parse-canvas-click)
@@ -109,6 +107,9 @@
   (swap! ball assoc :x 0 :y 0)
   (colliding? @ball)
 
+  (+ 1 2)
+  ball
+
 
   )
 
@@ -116,13 +117,13 @@
 (defn move [{:keys [vx x] :as me}]
   (let [acceleration 0.5
         max-speed 20
-        decelartion 2
+        decelartion (if (:jumping me) 0.1 1)
         vx (or vx 0)
         neue-vx (cond
                   (:phasing me) vx
                   (input? :left) (max (- max-speed) (- vx acceleration))
                   (input? :right) (min max-speed (+ vx acceleration))
-                  :else (if (< -2 vx 2) 0 (if (pos? vx) (- vx decelartion) (+ vx decelartion))))
+                  :else (if (< -1 vx 1) 0 (if (pos? vx) (- vx decelartion) (+ vx decelartion))))
         moved (update-in me [:x] + neue-vx)]
     (if-let [block (colliding? moved)]
       (let [block-edge (if (< neue-vx 0)
@@ -168,7 +169,7 @@
 
 
 (defn phase [me]
-  (let [max-phasing-cycles 20
+  (let [max-phasing-cycles 10
         cool-down-cycles 20]
     (if (:phasing me) 
       (if (> max-phasing-cycles (:phasing-count me))
@@ -179,6 +180,30 @@
         (if (input? :phase)
           (assoc me :phasing true :cool-down-count 0 :phasing-count 0)
           me)))))
+
+
+(defn change-color [me]
+  (let [new-color "red"
+        old-color "black"]
+    (if (and (:phasing me) (not (:painted me)))
+      (do
+        (-> (:easel-shape me)
+          (.-graphics)
+          (.clear)
+          (.beginFill new-color)
+          (.drawCircle 0 0 (:r me)))
+        (assoc me :painted true))
+      (if (and (not (:phasing me)) (:painted me))
+        (do
+          (-> (:easel-shape me)
+            (.-graphics)
+            (.clear)
+            (.beginFill old-color)
+            (.drawCircle 0 0 (:r me)))
+          (assoc me :painted false))
+        me))))
+
+
 
 
 (comment 
@@ -194,6 +219,7 @@
       (move)
       (jump)
       (phase)
+      (change-color)
       (reset)
       ))
 

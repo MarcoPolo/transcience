@@ -19906,11 +19906,7 @@ clojure.browser.repl.connect = function(a) {
   })
 };
 new_transcience.core = {};
-new_transcience.core.foo = function(a) {
-  return cljs.core.println.call(null, a, "Hello, World!")
-};
 console.log("hello world");
-jayq.core.inner.call(null, jayq.core.$.call(null, "\ufdd0'#stuff"), "Changed from cljs!");
 clojure.browser.repl.connect.call(null, "http://localhost:9001/repl");
 new_transcience.core.ball = new_transcience.engine.create_circle.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'color"], {"\ufdd0'color":"black"}));
 new_transcience.core.game_map_loop = cljs.core.atom.call(null, cljs.core.ObjMap.EMPTY);
@@ -19938,8 +19934,12 @@ new_transcience.core.make_block = function(a, b) {
 new_transcience.core.__GT_30th = function(a) {
   return Math.floor.call(null, a / 30)
 };
+new_transcience.core.coords__GT_block = function(a, b) {
+  return new_transcience.core.make_block.call(null, new_transcience.core.__GT_30th.call(null, a), new_transcience.core.__GT_30th.call(null, b))
+};
 new_transcience.core.parse_canvas_click = function(a) {
   var b = a.pageX, a = a.pageY, c = jayq.core.$.call(null, "#demoCanvas").offset(), d = c.top, b = new_transcience.core.__GT_30th.call(null, b - c.left), a = new_transcience.core.__GT_30th.call(null, a - d);
+  console.log("making", a, b);
   return new_transcience.core.make_block.call(null, a, b)
 };
 document.onclick = new_transcience.core.parse_canvas_click;
@@ -19971,23 +19971,25 @@ new_transcience.core.colliding_QMARK_ = function(a) {
 new_transcience.core.move = function(a) {
   a = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a;
   cljs.core._lookup.call(null, a, "\ufdd0'x", null);
-  var b;
-  b = cljs.core._lookup.call(null, a, "\ufdd0'vx", null);
+  var b = cljs.core._lookup.call(null, a, "\ufdd0'vx", null), c = cljs.core.truth_((new cljs.core.Keyword("\ufdd0'jumping")).call(null, a)) ? 0.1 : 1;
   b = cljs.core.truth_(b) ? b : 0;
-  if(!cljs.core.truth_((new cljs.core.Keyword("\ufdd0'phasing")).call(null, a))) {
+  if(cljs.core.truth_((new cljs.core.Keyword("\ufdd0'phasing")).call(null, a))) {
+    c = b
+  }else {
     if(cljs.core.truth_(new_transcience.core.input_QMARK_.call(null, "\ufdd0'left"))) {
-      b = -20 > b - 0.5 ? -20 : b - 0.5
+      c = -20 > b - 0.5 ? -20 : b - 0.5
     }else {
       if(cljs.core.truth_(new_transcience.core.input_QMARK_.call(null, "\ufdd0'right"))) {
-        b = 20 < b + 0.5 ? 20 : b + 0.5
+        c = 20 < b + 0.5 ? 20 : b + 0.5
       }else {
-        var c = -2 < b;
-        b = (c ? 2 > b : c) ? 0 : 0 < b ? b - 2 : b + 2
+        var d = -1 < b;
+        c = (d ? 1 > b : d) ? 0 : 0 < b ? b - c : b + c
       }
     }
   }
-  var c = cljs.core.update_in.call(null, a, cljs.core.PersistentVector.fromArray(["\ufdd0'x"], !0), cljs.core._PLUS_, b), d = new_transcience.core.colliding_QMARK_.call(null, c);
-  return cljs.core.truth_(d) ? (b = 0 > b ? (new cljs.core.Keyword("\ufdd0'x")).call(null, d) + (new cljs.core.Keyword("\ufdd0'w")).call(null, d) + (new cljs.core.Keyword("\ufdd0'r")).call(null, a) : (new cljs.core.Keyword("\ufdd0'x")).call(null, d) - (new cljs.core.Keyword("\ufdd0'r")).call(null, a), cljs.core.assoc.call(null, a, "\ufdd0'x", b, "\ufdd0'vx", 0)) : cljs.core.assoc.call(null, c, "\ufdd0'vx", b)
+  b = cljs.core.update_in.call(null, a, cljs.core.PersistentVector.fromArray(["\ufdd0'x"], !0), cljs.core._PLUS_, c);
+  d = new_transcience.core.colliding_QMARK_.call(null, b);
+  return cljs.core.truth_(d) ? (c = 0 > c ? (new cljs.core.Keyword("\ufdd0'x")).call(null, d) + (new cljs.core.Keyword("\ufdd0'w")).call(null, d) + (new cljs.core.Keyword("\ufdd0'r")).call(null, a) : (new cljs.core.Keyword("\ufdd0'x")).call(null, d) - (new cljs.core.Keyword("\ufdd0'r")).call(null, a), cljs.core.assoc.call(null, a, "\ufdd0'x", c, "\ufdd0'vx", 0)) : cljs.core.assoc.call(null, b, "\ufdd0'vx", c)
 };
 new_transcience.core.reset = function(a) {
   return 650 < (new cljs.core.Keyword("\ufdd0'y")).call(null, a) ? cljs.core.assoc.call(null, cljs.core.assoc.call(null, cljs.core.assoc.call(null, a, "\ufdd0'x", 50), "\ufdd0'y", 50), "\ufdd0'vy", 0) : a
@@ -20011,11 +20013,20 @@ new_transcience.core.jump = function(a) {
   }()) ? cljs.core.assoc.call(null, a, "\ufdd0'vy", -10, "\ufdd0'jumping", !0) : a
 };
 new_transcience.core.phase = function(a) {
-  return cljs.core.truth_((new cljs.core.Keyword("\ufdd0'phasing")).call(null, a)) ? 20 > (new cljs.core.Keyword("\ufdd0'phasing-count")).call(null, a) ? cljs.core.update_in.call(null, a, cljs.core.PersistentVector.fromArray(["\ufdd0'phasing-count"], !0), cljs.core.inc) : cljs.core.assoc.call(null, a, "\ufdd0'phasing", !1, "\ufdd0'phasing-count", 0, "\ufdd0'cool-down-count", 0) : 20 > (new cljs.core.Keyword("\ufdd0'cool-down-count")).call(null, a) ? cljs.core.update_in.call(null, a, cljs.core.PersistentVector.fromArray(["\ufdd0'cool-down-count"], 
+  return cljs.core.truth_((new cljs.core.Keyword("\ufdd0'phasing")).call(null, a)) ? 10 > (new cljs.core.Keyword("\ufdd0'phasing-count")).call(null, a) ? cljs.core.update_in.call(null, a, cljs.core.PersistentVector.fromArray(["\ufdd0'phasing-count"], !0), cljs.core.inc) : cljs.core.assoc.call(null, a, "\ufdd0'phasing", !1, "\ufdd0'phasing-count", 0, "\ufdd0'cool-down-count", 0) : 20 > (new cljs.core.Keyword("\ufdd0'cool-down-count")).call(null, a) ? cljs.core.update_in.call(null, a, cljs.core.PersistentVector.fromArray(["\ufdd0'cool-down-count"], 
   !0), cljs.core.inc) : cljs.core.truth_(new_transcience.core.input_QMARK_.call(null, "\ufdd0'phase")) ? cljs.core.assoc.call(null, a, "\ufdd0'phasing", !0, "\ufdd0'cool-down-count", 0, "\ufdd0'phasing-count", 0) : a
 };
+new_transcience.core.change_color = function(a) {
+  return cljs.core.truth_(function() {
+    var b = (new cljs.core.Keyword("\ufdd0'phasing")).call(null, a);
+    return cljs.core.truth_(b) ? cljs.core.not.call(null, (new cljs.core.Keyword("\ufdd0'painted")).call(null, a)) : b
+  }()) ? ((new cljs.core.Keyword("\ufdd0'easel-shape")).call(null, a).graphics.clear().beginFill("red").drawCircle(0, 0, (new cljs.core.Keyword("\ufdd0'r")).call(null, a)), cljs.core.assoc.call(null, a, "\ufdd0'painted", !0)) : cljs.core.truth_(function() {
+    var b = cljs.core.not.call(null, (new cljs.core.Keyword("\ufdd0'phasing")).call(null, a));
+    return b ? (new cljs.core.Keyword("\ufdd0'painted")).call(null, a) : b
+  }()) ? ((new cljs.core.Keyword("\ufdd0'easel-shape")).call(null, a).graphics.clear().beginFill("black").drawCircle(0, 0, (new cljs.core.Keyword("\ufdd0'r")).call(null, a)), cljs.core.assoc.call(null, a, "\ufdd0'painted", !1)) : a
+};
 new_transcience.core.update_player = function(a) {
-  return new_transcience.core.reset.call(null, new_transcience.core.phase.call(null, new_transcience.core.jump.call(null, new_transcience.core.move.call(null, new_transcience.core.gravity.call(null, a)))))
+  return new_transcience.core.reset.call(null, new_transcience.core.change_color.call(null, new_transcience.core.phase.call(null, new_transcience.core.jump.call(null, new_transcience.core.move.call(null, new_transcience.core.gravity.call(null, a))))))
 };
 document.onkeydown = function(a) {
   return cljs.core.swap_BANG_.call(null, new_transcience.core.input, cljs.core.assoc, new_transcience.core.__GT_key.call(null, a.keyCode), !0)
