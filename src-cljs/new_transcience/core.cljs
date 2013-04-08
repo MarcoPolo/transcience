@@ -169,7 +169,7 @@
 
 
 (defn phase [me]
-  (let [max-phasing-cycles 10
+  (let [max-phasing-cycles 20
         cool-down-cycles 20]
     (if (:phasing me) 
       (if (> max-phasing-cycles (:phasing-count me))

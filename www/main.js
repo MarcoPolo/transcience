@@ -20013,7 +20013,7 @@ new_transcience.core.jump = function(a) {
   }()) ? cljs.core.assoc.call(null, a, "\ufdd0'vy", -10, "\ufdd0'jumping", !0) : a
 };
 new_transcience.core.phase = function(a) {
-  return cljs.core.truth_((new cljs.core.Keyword("\ufdd0'phasing")).call(null, a)) ? 10 > (new cljs.core.Keyword("\ufdd0'phasing-count")).call(null, a) ? cljs.core.update_in.call(null, a, cljs.core.PersistentVector.fromArray(["\ufdd0'phasing-count"], !0), cljs.core.inc) : cljs.core.assoc.call(null, a, "\ufdd0'phasing", !1, "\ufdd0'phasing-count", 0, "\ufdd0'cool-down-count", 0) : 20 > (new cljs.core.Keyword("\ufdd0'cool-down-count")).call(null, a) ? cljs.core.update_in.call(null, a, cljs.core.PersistentVector.fromArray(["\ufdd0'cool-down-count"], 
+  return cljs.core.truth_((new cljs.core.Keyword("\ufdd0'phasing")).call(null, a)) ? 20 > (new cljs.core.Keyword("\ufdd0'phasing-count")).call(null, a) ? cljs.core.update_in.call(null, a, cljs.core.PersistentVector.fromArray(["\ufdd0'phasing-count"], !0), cljs.core.inc) : cljs.core.assoc.call(null, a, "\ufdd0'phasing", !1, "\ufdd0'phasing-count", 0, "\ufdd0'cool-down-count", 0) : 20 > (new cljs.core.Keyword("\ufdd0'cool-down-count")).call(null, a) ? cljs.core.update_in.call(null, a, cljs.core.PersistentVector.fromArray(["\ufdd0'cool-down-count"], 
   !0), cljs.core.inc) : cljs.core.truth_(new_transcience.core.input_QMARK_.call(null, "\ufdd0'phase")) ? cljs.core.assoc.call(null, a, "\ufdd0'phasing", !0, "\ufdd0'cool-down-count", 0, "\ufdd0'phasing-count", 0) : a
 };
 new_transcience.core.change_color = function(a) {
