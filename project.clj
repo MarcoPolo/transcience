@@ -9,8 +9,7 @@
      :compiler
      {:pretty-print true
       :output-to "www/main.js"
-      :optimizations :simple}}]
-   :repl-listen-port 9001}
+      :optimizations :simple}}]}
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [jayq "2.3.0"]
                  [compojure "1.1.5"]]

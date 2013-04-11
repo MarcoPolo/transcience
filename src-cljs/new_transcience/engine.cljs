@@ -37,20 +37,22 @@
   (.update stage))
 
 ;; Returns an atom containing the state of that square
-(defn create-square [{:keys [x y w h color] :or {x 0 y 0 w 10 h 10 color "blue"}}]
+(defn create-square [{:keys [x y w h color] :or {x 0 y 0 w 10 h 10 color "blue"} :as attrs}]
   (let [square (createjs/Shape.)]
     (-> (.-graphics square)
       (.beginFill color)
       (.drawRect x y w h))
     (add-and-update-stage square)
     (register-shape-atom
-      (atom {:easel-shape square
-             :x x
-             :h h
-             :w w
-             :y y}))))
+      (atom (merge
+              attrs
+              {:easel-shape square
+               :x x
+               :h h
+               :w w
+               :y y})))))
 
-(defn create-circle [{:keys [x y r color] :or {x 0 y 0 r 10 color "red"}}]
+(defn create-circle [{:keys [x y r color] :or {x 0 y 0 r 10 color "red"} :as attrs}]
   (let [circle (createjs/Shape.)]
     (-> 
         (.-graphics circle)
@@ -58,10 +60,12 @@
         (.drawCircle x y r))
     (add-and-update-stage circle)
     (register-shape-atom 
-      (atom {:easel-shape circle
-             :x x
-             :r r
-             :y y}))))
+      (atom (merge
+              attrs
+              {:easel-shape circle
+               :x x
+               :r r
+               :y y})))))
 
 (defn destroy-shape [shape]
   (.removeChild stage (:easel-shape shape))

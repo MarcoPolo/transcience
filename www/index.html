@@ -5,11 +5,14 @@
     <p> [Shift] to become transient </p>
     <p> [arrow keys] to move</p>
     <p> [Space] to jump </p>
-    <canvas width=800 height=400  id="demoCanvas" style=""></canvas>
-    <!--
-      <input type="radio" name="boxType" value="normal">Normal</input>
-      <input type="radio" name="boxType" value="impassable">Impassable</input>
-    -->
+    <canvas width=800 height=400  id="demoCanvas" style="margin-bottom:50px;"></canvas>
+
+    <div id="itemType">
+      <input type="radio" name="boxType" value="normal">Normal Block</input>
+      <input type="radio" name="boxType" value="impassable">Impassable Block</input>
+      <input type="radio" name="boxType" value="impassable">Enemy</input>
+    </div>
+
     <script src="jquery.js"></script>
     <script src="create.js"></script>
     <script src="main.js"></script>

@@ -7,7 +7,7 @@
 (.log js/console "hello world")
 
 ;; So we can connect to the repl server
-(repl/connect "http://localhost:9001/repl")
+(repl/connect "http://localhost:9000/repl")
 
 (def ball (engine/create-circle {:color "black" }))
 
@@ -34,18 +34,37 @@
 (def input (atom {}))
 (def blocks (atom {}))
 
-(defn make-block [row column]
+(defn make-block [row column impassable]
   (if-let [old-block (@blocks [row column])]
     (do 
       (engine/destroy-shape old-block)
       (swap! blocks dissoc [row column]))
-    (swap! blocks assoc [row column] @(engine/create-square {:x (* 30 column) :y (* 30 row) :h 30 :w 30}))))
+    (swap! blocks assoc [row column] 
+           (assoc 
+             (if impassable
+               @(engine/create-square {:x (* 30 column) :y (* 30 row) :h 30 :w 30 :color "grey" })
+               @(engine/create-square {:x (* 30 column) :y (* 30 row) :h 30 :w 30 }))
+             :impassable
+             impassable))))
 
 (defn ->30th [v]
   (Math/floor (/ v 30)))
 
-(defn coords->block [x y]
-  (make-block (->30th x) (->30th y)))
+(comment 
+
+  (println (= "impassable" (.attr ($ "#itemType input:checked") "value")))
+ 
+  (get-item-type)
+
+  )
+
+(defn get-item-type []
+  (condp = (.attr ($ "#blockType input:checked") "value")
+    "impassable" :impassable-block
+    "normal"     :normal-block
+    :other))
+
+  
 
 (defn parse-canvas-click [e]
   (let [x (.-pageX e)
@@ -55,8 +74,12 @@
         top-offset (.-top offset)
         c (->30th (- x left-offset))
         r (->30th (- y top-offset))]
-    (.log js/console "making" r c)
-    (make-block r c)))
+    (.log js/console "clicked" r c "that is" (get-item-type))
+    (condp = (get-item-type)
+      :impassable-block (make-block r c true)
+      :normal-block     (make-block r c false)
+      :enemy            #(.log js/console "Should be making an enemy")
+      nil)))
 
 (set! (.-onclick js/document) parse-canvas-click)
 
@@ -110,14 +133,14 @@
   (+ 1 2)
   ball
 
+  (require '[cljs.repl :as repl])
+
 
   )
 
 
-(defn move [{:keys [vx x] :as me}]
-  (let [acceleration 0.5
-        max-speed 20
-        decelartion (if (:jumping me) 0.1 1)
+(defn move [{:keys [vx x] :as me} input? max-speed acceleration decelartion]
+  (let [decelartion (if (:jumping me) 0.1 decelartion)
         vx (or vx 0)
         neue-vx (cond
                   (:phasing me) vx
@@ -191,7 +214,8 @@
           (.-graphics)
           (.clear)
           (.beginFill new-color)
-          (.drawCircle 0 0 (:r me)))
+          (.drawCircle 0 0 (:r me))
+          )
         (assoc me :painted true))
       (if (and (not (:phasing me)) (:painted me))
         (do
@@ -216,7 +240,7 @@
 (defn update-player [me]
   (-> me
       (gravity)
-      (move)
+      (move input? 15 0.5 1)
       (jump)
       (phase)
       (change-color)
