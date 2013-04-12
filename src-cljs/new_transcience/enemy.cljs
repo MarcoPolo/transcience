@@ -1,6 +1,7 @@
 ;; All the awesome things to do with enemies
 (ns new-transcience.enemy
   (:require [new-transcience.core :as core]
+            [new-transcience.player :as player]
             [new-transcience.engine :as engine]))
 
 
@@ -12,7 +13,7 @@
 
 ;; Access the atom and return the immutable hash map
 (defn find-player []
-  @core/player)
+  @player/player)
 
 (defn close-enough? [num1 num2 max-dist]
   (< (Math/abs (- num1 num2)) max-dist))
@@ -57,12 +58,12 @@
       (-> 
         enemy
         (update-in [:dir-time] inc)
-        (core/move input? 4 acceleration 1)))))
+        (player/move input? 4 acceleration 1)))))
 
 (defn dont-fall [{:keys [dir x y vx acc] :as enemy}]
   (let [ 
         steps-ahead (max 2 (inc (/ vx acc))) ;; How far ahead we should look to make sure the dude doesn't fall
-        future-state (last (take steps-ahead (iterate (comp core/gravity move) enemy)))
+        future-state (last (take steps-ahead (iterate (comp player/gravity move) enemy)))
         future-vy (:vy future-state)]
     ;; Check to see what the future holds for the enemies y velocity
     (if (zero? future-vy)
@@ -78,7 +79,7 @@
     (map 
       (fn [e]
         (:x
-          (first (remove #(= 0 (:vy %)) (iterate (comp core/gravity move) e)))))
+          (first (remove #(= 0 (:vy %)) (iterate (comp player/gravity move) e)))))
       [left-state right-state])))
 
 (defn distance-from-edge [{:keys [x edges acc] :as entity}]
@@ -101,14 +102,14 @@
       enemy)))
 
 (defn reset [{:keys [x y] :as enemy}]
-  (if (or (> x 1000) (> y 1000) (nil? (:edges enemy)))
+  (if (or (> x 1000) (> y 1000))
     (assoc enemy :vy 0 :vx 0 :x 50 :y 350 :edges (find-edges enemy ))
     enemy))
         
 (defn standard-enemy-routine [enemy]
   (-> enemy
       (reset)
-      (core/gravity)
+      (player/gravity)
       (dont-stand-still)
       (chase)
       (move)
@@ -118,9 +119,6 @@
 (def enemy (engine/create-circle {:color "green" :acc 0.5}))
 (swap! enemy assoc :x 50 :y 350)
 
-(efficient-dont-fall @enemy)
-(swap! enemy assoc :edges (find-edges @enemy))
-
 (def enemy-update-fns (atom []))
 
 (def enemy-loop
@@ -129,8 +127,4 @@
       (update-enemy))
     20))
 
-;(swap! enemy-update-fns conj #(swap! enemy standard-enemy-routine))
-
-(comment
-
-)
+(swap! enemy-update-fns conj #(swap! enemy standard-enemy-routine))

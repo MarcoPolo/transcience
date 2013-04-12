@@ -6,7 +6,7 @@
 (defn build-demo-level []
   (let [call (ajax "/blocks" {:type "get" })]
     (.done call #(let [server-blocks (vals (cljs.reader/read-string %))]
-                   (doseq [old-block (keys core/@blocks)]
+                   (doseq [old-block (keys @core/blocks)]
                      (apply core/make-block old-block))
                    (doseq [new-block server-blocks]
                      (apply core/make-block new-block))))))

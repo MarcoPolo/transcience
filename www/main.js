@@ -19954,13 +19954,12 @@ new_transcience.player = {};
 new_transcience.player.move = function(a, b, c, d, e) {
   a = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a;
   cljs.core._lookup.call(null, a, "\ufdd0'x", null);
-  b = cljs.core._lookup.call(null, a, "\ufdd0'vx", null);
-  e = cljs.core.truth_((new cljs.core.Keyword("\ufdd0'jumping")).call(null, a)) ? 0.1 : e;
-  b = cljs.core.truth_(b) ? b : 0;
-  cljs.core.truth_((new cljs.core.Keyword("\ufdd0'phasing")).call(null, a)) ? c = b : cljs.core.truth_(new_transcience.core.input_QMARK_.call(null, "\ufdd0'left")) ? c = -c > b - d ? -c : b - d : cljs.core.truth_(new_transcience.core.input_QMARK_.call(null, "\ufdd0'right")) ? c = c < b + d ? c : b + d : (c = -1 < b, c = (c ? 1 > b : c) ? 0 : 0 < b ? b - e : b + e);
-  d = cljs.core.update_in.call(null, a, cljs.core.PersistentVector.fromArray(["\ufdd0'x"], !0), cljs.core._PLUS_, c);
-  e = new_transcience.core.colliding_QMARK_.call(null, d);
-  return cljs.core.truth_(e) ? (c = 0 > c ? (new cljs.core.Keyword("\ufdd0'x")).call(null, e) + (new cljs.core.Keyword("\ufdd0'w")).call(null, e) + (new cljs.core.Keyword("\ufdd0'r")).call(null, a) : (new cljs.core.Keyword("\ufdd0'x")).call(null, e) - (new cljs.core.Keyword("\ufdd0'r")).call(null, a), cljs.core.assoc.call(null, a, "\ufdd0'x", c, "\ufdd0'vx", 0)) : cljs.core.assoc.call(null, d, "\ufdd0'vx", c)
+  var f = cljs.core._lookup.call(null, a, "\ufdd0'vx", null), e = cljs.core.truth_((new cljs.core.Keyword("\ufdd0'jumping")).call(null, a)) ? 0.1 : e;
+  f = cljs.core.truth_(f) ? f : 0;
+  cljs.core.truth_((new cljs.core.Keyword("\ufdd0'phasing")).call(null, a)) ? b = f : cljs.core.truth_(b.call(null, "\ufdd0'left")) ? b = -c > f - d ? -c : f - d : cljs.core.truth_(b.call(null, "\ufdd0'right")) ? b = c < f + d ? c : f + d : (b = -1 < f, b = (b ? 1 > f : b) ? 0 : 0 < f ? f - e : f + e);
+  c = cljs.core.update_in.call(null, a, cljs.core.PersistentVector.fromArray(["\ufdd0'x"], !0), cljs.core._PLUS_, b);
+  d = new_transcience.core.colliding_QMARK_.call(null, c);
+  return cljs.core.truth_(d) ? (b = 0 > b ? (new cljs.core.Keyword("\ufdd0'x")).call(null, d) + (new cljs.core.Keyword("\ufdd0'w")).call(null, d) + (new cljs.core.Keyword("\ufdd0'r")).call(null, a) : (new cljs.core.Keyword("\ufdd0'x")).call(null, d) - (new cljs.core.Keyword("\ufdd0'r")).call(null, a), cljs.core.assoc.call(null, a, "\ufdd0'x", b, "\ufdd0'vx", 0)) : cljs.core.assoc.call(null, c, "\ufdd0'vx", b)
 };
 new_transcience.player.reset = function(a) {
   return 650 < (new cljs.core.Keyword("\ufdd0'y")).call(null, a) ? cljs.core.assoc.call(null, cljs.core.assoc.call(null, cljs.core.assoc.call(null, a, "\ufdd0'x", 50), "\ufdd0'y", 50), "\ufdd0'vy", 0) : a
@@ -20006,7 +20005,7 @@ new_transcience.player.game = setInterval(function() {
 new_transcience.enemy = {};
 new_transcience.enemy.__GT_flip_dir = cljs.core.PersistentArrayMap.fromArrays(["\ufdd0'right", "\ufdd0'left", null], ["\ufdd0'left", "\ufdd0'right", "\ufdd0'right"]);
 new_transcience.enemy.find_player = function() {
-  return cljs.core.deref.call(null, new_transcience.core.player)
+  return cljs.core.deref.call(null, new_transcience.player.player)
 };
 new_transcience.enemy.close_enough_QMARK_ = function(a, b, c) {
   return Math.abs.call(null, a - b) < c
@@ -20055,13 +20054,13 @@ new_transcience.enemy.chase = function(a) {
 };
 new_transcience.enemy.move = function(a) {
   var a = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, b = cljs.core._lookup.call(null, a, "\ufdd0'acc", null), c = cljs.core._lookup.call(null, a, "\ufdd0'chasing", null), d = cljs.core._lookup.call(null, a, "\ufdd0'dir-time", null), e = cljs.core._lookup.call(null, a, "\ufdd0'dir", null), b = cljs.core.truth_(c) ? 1 : b, c = cljs.core.PersistentArrayMap.fromArrays([e], [!0]);
-  return 200 < d ? cljs.core.assoc.call(null, a, "\ufdd0'dir", new_transcience.enemy.__GT_flip_dir.call(null, e), "\ufdd0'dir-time", 0) : new_transcience.core.move.call(null, cljs.core.update_in.call(null, a, cljs.core.PersistentVector.fromArray(["\ufdd0'dir-time"], !0), cljs.core.inc), c, 4, b, 1)
+  return 200 < d ? cljs.core.assoc.call(null, a, "\ufdd0'dir", new_transcience.enemy.__GT_flip_dir.call(null, e), "\ufdd0'dir-time", 0) : new_transcience.player.move.call(null, cljs.core.update_in.call(null, a, cljs.core.PersistentVector.fromArray(["\ufdd0'dir-time"], !0), cljs.core.inc), c, 4, b, 1)
 };
 new_transcience.enemy.dont_fall = function(a) {
   var a = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, b = cljs.core._lookup.call(null, a, "\ufdd0'acc", null), c = cljs.core._lookup.call(null, a, "\ufdd0'vx", null);
   cljs.core._lookup.call(null, a, "\ufdd0'y", null);
   cljs.core._lookup.call(null, a, "\ufdd0'x", null);
-  var d = cljs.core._lookup.call(null, a, "\ufdd0'dir", null), b = cljs.core.last.call(null, cljs.core.take.call(null, 2 > c / b + 1 ? 2 : c / b + 1, cljs.core.iterate.call(null, cljs.core.comp.call(null, new_transcience.core.gravity, new_transcience.enemy.move), a)));
+  var d = cljs.core._lookup.call(null, a, "\ufdd0'dir", null), b = cljs.core.last.call(null, cljs.core.take.call(null, 2 > c / b + 1 ? 2 : c / b + 1, cljs.core.iterate.call(null, cljs.core.comp.call(null, new_transcience.player.gravity, new_transcience.enemy.move), a)));
   return 0 === (new cljs.core.Keyword("\ufdd0'vy")).call(null, b) ? a : cljs.core.assoc.call(null, a, "\ufdd0'dir", new_transcience.enemy.__GT_flip_dir.call(null, d), "\ufdd0'dir-time", 0)
 };
 new_transcience.enemy.find_edges = function(a) {
@@ -20073,7 +20072,7 @@ new_transcience.enemy.find_edges = function(a) {
   return cljs.core.map.call(null, function(a) {
     return(new cljs.core.Keyword("\ufdd0'x")).call(null, cljs.core.first.call(null, cljs.core.remove.call(null, function(a) {
       return cljs.core._EQ_.call(null, 0, (new cljs.core.Keyword("\ufdd0'vy")).call(null, a))
-    }, cljs.core.iterate.call(null, cljs.core.comp.call(null, new_transcience.core.gravity, new_transcience.enemy.move), a))))
+    }, cljs.core.iterate.call(null, cljs.core.comp.call(null, new_transcience.player.gravity, new_transcience.enemy.move), a))))
   }, cljs.core.PersistentVector.fromArray([a, b], !0))
 };
 new_transcience.enemy.distance_from_edge = function(a) {
@@ -20098,16 +20097,13 @@ new_transcience.enemy.dont_stand_still = function(a) {
 new_transcience.enemy.reset = function(a) {
   var a = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, b = cljs.core._lookup.call(null, a, "\ufdd0'y", null);
   var c = 1E3 < cljs.core._lookup.call(null, a, "\ufdd0'x", null);
-  b = c ? c : (b = 1E3 < b) ? b : null == (new cljs.core.Keyword("\ufdd0'edges")).call(null, a);
-  return b ? cljs.core.assoc.call(null, a, "\ufdd0'vy", 0, "\ufdd0'vx", 0, "\ufdd0'x", 50, "\ufdd0'y", 350, "\ufdd0'edges", new_transcience.enemy.find_edges.call(null, a)) : a
+  return(c ? c : 1E3 < b) ? cljs.core.assoc.call(null, a, "\ufdd0'vy", 0, "\ufdd0'vx", 0, "\ufdd0'x", 50, "\ufdd0'y", 350, "\ufdd0'edges", new_transcience.enemy.find_edges.call(null, a)) : a
 };
 new_transcience.enemy.standard_enemy_routine = function(a) {
-  return new_transcience.enemy.move.call(null, new_transcience.enemy.chase.call(null, new_transcience.enemy.dont_stand_still.call(null, new_transcience.core.gravity.call(null, new_transcience.enemy.reset.call(null, a)))))
+  return new_transcience.enemy.move.call(null, new_transcience.enemy.chase.call(null, new_transcience.enemy.dont_stand_still.call(null, new_transcience.player.gravity.call(null, new_transcience.enemy.reset.call(null, a)))))
 };
 new_transcience.enemy.enemy = new_transcience.engine.create_circle.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'color", "\ufdd0'acc"], {"\ufdd0'color":"green", "\ufdd0'acc":0.5}));
 cljs.core.swap_BANG_.call(null, new_transcience.enemy.enemy, cljs.core.assoc, "\ufdd0'x", 50, "\ufdd0'y", 350);
-new_transcience.enemy.efficient_dont_fall.call(null, cljs.core.deref.call(null, new_transcience.enemy.enemy));
-cljs.core.swap_BANG_.call(null, new_transcience.enemy.enemy, cljs.core.assoc, "\ufdd0'edges", new_transcience.enemy.find_edges.call(null, cljs.core.deref.call(null, new_transcience.enemy.enemy)));
 new_transcience.enemy.enemy_update_fns = cljs.core.atom.call(null, cljs.core.PersistentVector.EMPTY);
 new_transcience.enemy.enemy_loop = setInterval(function() {
   for(var a = cljs.core.seq.call(null, cljs.core.deref.call(null, new_transcience.enemy.enemy_update_fns));;) {
@@ -20118,11 +20114,13 @@ new_transcience.enemy.enemy_loop = setInterval(function() {
     }
   }
 }, 20);
+cljs.core.swap_BANG_.call(null, new_transcience.enemy.enemy_update_fns, cljs.core.conj, function() {
+  return cljs.core.swap_BANG_.call(null, new_transcience.enemy.enemy, new_transcience.enemy.standard_enemy_routine)
+});
 new_transcience.level_editor = {};
-new_transcience.level_editor.blocks = cljs.core.atom.call(null, cljs.core.ObjMap.EMPTY);
 new_transcience.level_editor.build_demo_level = function() {
   return jayq.core.ajax.call(null, "/blocks", cljs.core.ObjMap.fromObject(["\ufdd0'type"], {"\ufdd0'type":"get"})).done(function(a) {
-    for(var a = cljs.core.vals.call(null, cljs.reader.read_string.call(null, a)), b = cljs.core.seq.call(null, cljs.core.keys.call(null, cljs.core.deref.call(null, new_transcience.level_editor.blocks)));;) {
+    for(var a = cljs.core.vals.call(null, cljs.reader.read_string.call(null, a)), b = cljs.core.seq.call(null, cljs.core.keys.call(null, cljs.core.deref.call(null, new_transcience.core.blocks)));;) {
       if(b) {
         var c = cljs.core.first.call(null, b);
         cljs.core.apply.call(null, new_transcience.core.make_block, c);

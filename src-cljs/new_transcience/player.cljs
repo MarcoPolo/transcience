@@ -7,8 +7,8 @@
         vx (or vx 0)
         neue-vx (cond
                   (:phasing me) vx
-                  (core/input? :left) (max (- max-speed) (- vx acceleration))
-                  (core/input? :right) (min max-speed (+ vx acceleration))
+                  (input? :left) (max (- max-speed) (- vx acceleration))
+                  (input? :right) (min max-speed (+ vx acceleration))
                   :else (if (< -1 vx 1) 0 (if (pos? vx) (- vx decelartion) (+ vx decelartion))))
         moved (update-in me [:x] + neue-vx)]
     (if-let [block (core/colliding? moved)]
