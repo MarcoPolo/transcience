@@ -78,8 +78,9 @@
 
 
 (defn onkeypress [e]
- (swap! input assoc (->key (.-keyCode e)) true)
- (.preventDefault e))
+  (swap! input assoc (->key (.-keyCode e)) true)
+  (if (->key (.-keyCode e))
+    (.preventDefault e)))
 
 (set! (.-onkeydown js/document) onkeypress)
 
