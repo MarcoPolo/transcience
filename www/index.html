@@ -1,20 +1,58 @@
 <html>
     <head>
+        <link rel="stylesheet" type="text/css" href="reset.css">
+        <link rel="stylesheet" type="text/css" href="main.css">
+        <title>Transcience - Physics redefined</title>
     </head>
-    <h1> Welcome to Transcience </h2>
-    <p> [Shift] to become transient </p>
-    <p> [arrow keys] to move</p>
-    <p> [Space] to jump </p>
-    <canvas width=800 height=400  id="demoCanvas" style="margin-bottom:50px;"></canvas>
 
-    <div id="itemType">
-      <input type="radio" name="boxType" value="normal">Normal Block</input>
-      <input type="radio" name="boxType" value="impassable">Impassable Block</input>
-      <input type="radio" name="boxType" value="impassable">Enemy</input>
-    </div>
+    <body>
 
-    <script src="jquery.js"></script>
-    <script src="create.js"></script>
-    <script src="main.js"></script>
+        <div id="game-container">
+            <div id="intro" class="color-stripe">
+                <h1 id="game-title">Transcience</h1>
+                <!-- WE PROBABLY NEED AN IMAGE HERE. I'M WORKING ON IT. I PROMISE. -->
+            </div>
+
+            <div id="concept" class="color-stripe">
+                <h2>Concepts</h2>
+                <p class="text">Let's begin with the concept of transcience. When you are transcient, you:</p>
+                <p>1. Phase into a different dimension.</p>
+                <p>2. Maintain the velocity you had in the previous dimension.</p><br>
+                <p>So, when you phase, your interactions with objects in this dimension are different and your your velocity is not affected by different forces. To help get you started, when you phase, you can go through certain objects and you can go further if you're currently moving. Can you think of ways to complete a level with those two ideas in mind?</p>
+            </div>
+            <div id="how-to-play" class="color-stripe">
+                <h2>Controls</h2>
+                    <div class="text">
+                        <p><span class="bold">Shift</span> to become transient.</p>
+                        <p><span class="bold">Arrow keys</span> to move.</p>
+                        <p><span class="bold">Space</span> to jump.</p>
+                    </div>
+
+                    <!-- I'm in favor of having an image here instead of some shitty text -->
+            </div>
+
+            <div id="canvas-container" class="color-stripe">
+                <h2>Let's play!</h2>
+                <div id="center-me">
+                    <canvas width="900" height="600"  id="demoCanvas"></canvas>
+
+                    <div id="itemType" class="dev">
+                      <input type="radio" name="boxType" id="normal-block" value="normal">
+                      <label for="normal-block">Normal Block</label><br>
+                      <input type="radio" name="boxType" id="impassable-block" value="impassable">
+                      <label for="impassable-block">Impassable Block</label><br>
+                      <input type="radio" name="boxType" id="enemy" value="impassable">
+                      <label for="enemy">Enemy</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- scripts -->
+        <script src="jquery.js"></script>
+        <script src="create.js"></script>
+        <script src="main.js"></script>
+
+    </body>
 </html>
 
