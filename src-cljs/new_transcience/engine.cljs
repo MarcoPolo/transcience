@@ -2,7 +2,41 @@
   (:use [jayq.core :only [$ append]]))
 
 (def stage
-  (createjs/Stage. "demoCanvas"))
+  (createjs/Stage. "demoCanvas")) ;;new stage(demoCanvas)
+
+;; play the shot sound
+;;createjs.Sound.play("laser", createjs.Sound.INTERUPT_LATE);
+
+(def assetsPath "assets/")
+
+(def manifest [
+               { :id "alienTalk" :src (str assetsPath "AlienTalk.wav") } ;; :data 6
+               { :id "death" :src (str assetsPath "Death.wav") }
+               { :id "phase" :src (str assetsPath "Phase.wav") }
+               { :id "switch" :src (str assetsPath "Switch.wav") }
+               { :id "tractorBeam" :src (str assetsPath "TractorBeam.wav") }
+               { :id "shipAmbiance" :src (str assetsPath "ShipAmbiance.wav") }               
+              ])
+
+(def preload (createjs/LoadQueue.))
+(.installPlugin preload (.-Sound js/createjs)) ;; .- for accessing object fields
+;;(.addEventListener preload "complete" doneLoading)
+;;(.addEventListener preload "progress" updateLoading)
+(.loadManifest preload (clj->js manifest))
+
+(.addEventListener preload "complete" #(.play createjs/Sound "shipAmbiance"))
+
+;(.play createjs/Sound  "alienTalk")
+
+
+
+
+
+
+
+
+
+
 
 ;;(.addChild stage circle)
 
