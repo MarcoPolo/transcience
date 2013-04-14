@@ -22,6 +22,7 @@
       (-> moved
           (assoc :vx neue-vx)))))
 
+
 (defn reset [me]
   (let [{:keys [x y]} (or @core/start-spot {:x 50 :y 0} )]
     ;;reset if the player is out of bounds or finished with the game

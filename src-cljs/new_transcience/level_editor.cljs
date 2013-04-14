@@ -10,16 +10,6 @@
 (def end-spot (atom nil)) 
 
 
-(defn build-demo-level []
-  (let [call (ajax "/blocks" {:type "get" })]
-    (.done call #(let [server-blocks (vals (cljs.reader/read-string %))]
-                   (doseq [old-block (keys @core/blocks)]
-                     (apply core/make-block old-block))
-                   (doseq [new-block server-blocks]
-                     (apply core/make-block new-block))))))
-
-;(build-demo-level)
-
 (defn get-item-type []
   (condp = (.attr ($ "#itemType input:checked") "value")
     "impassable" :impassable-block
@@ -37,11 +27,14 @@
     things   
     #(select-keys % (for [ [k v] % :when (not= (last v) type)] k))))
 
+(declare save-thing)
+
 (defn make-start-spot [r c]
   (let [x (* 30 c) y (* 30 r)
         start-img (engine/create-image-character "assets/startFlag.png" 1 1 0 0 16)]
     (swap! start-img assoc :x x :y y)
     (remove-all-from-things :start-spot)
+    (save-thing [x y :start-spot])
     (reset! core/start-spot {:x x :y y})
     (if @start-spot
       (engine/destroy-shape @start-spot))
@@ -54,6 +47,7 @@
         end-img (engine/create-image-character "assets/endFlag.png" 1 1 0 0 16)]
     (swap! end-img assoc :x x :y y)
     (remove-all-from-things :end-spot)
+    (save-thing [x y :end-spot])
     (reset! core/end-spot {:x x :y y})
     (if @end-spot
       (engine/destroy-shape @end-spot))
@@ -66,8 +60,12 @@
   (ajax "/saveThings" {:type "post" :data (clj->js {:things (JSON.stringify (clj->js things))
                                                     :level level})}))
 
+(declare clean-level)
+
+
 (defn fetch-level [level callback]
-  (let [call (ajax "/things" {:type "get" :data {:level 1}})]
+  (clean-level)
+  (let [call (ajax "/things" {:type "get" :data {:level level}})]
     (.done call #(callback
                    (map 
                      (fn [[a b c]] [a b (keyword c)]) 
@@ -134,6 +132,24 @@
     [:x :y]
     (pop (first (filter #(= :end-spot (last %)) (vals @things))))))
 
+(defn clean-level []
+  ;; first get rid of all the blocks
+  (doseq [block (vals @core/blocks)]
+    (engine/destroy-shape block))
+  (reset! core/blocks {})
+  ;; Kill then enemies
+  (kill-all-enemies)
+  (if @start-spot
+    (do
+      (engine/destroy-shape @start-spot)
+      (reset! start-spot nil)))
+  (if @end-spot
+    (do
+      (engine/destroy-shape @end-spot)
+      (reset! end-spot nil)))
+  (reset! things {}))
+
+
 (set! (.-onclick js/document) parse-canvas-click)
 
 (.click ($ :#killAllEnemies) kill-all-enemies)
@@ -144,6 +160,8 @@
                           (fetch-level 
                             (get-level)
                             parse-level)))
+(clean-level)
+;(vals @core/blocks)
                                   
 
 

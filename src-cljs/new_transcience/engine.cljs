@@ -66,8 +66,10 @@
   (let [impassable-block (createjs/Bitmap. "assets/impassable-block.png")]
     (set! (.-x impassable-block) x)
     (set! (.-y impassable-block) y)
-    (add-and-update-stage impassable-block))
-  attrs)
+    (add-and-update-stage impassable-block)
+    (atom (merge attrs {:easel-shape impassable-block}))))
+
+  
 
 (defn create-image-character [assetUrl scaleX scaleY regX regY rad]
   (let [player (createjs/Bitmap. assetUrl)]

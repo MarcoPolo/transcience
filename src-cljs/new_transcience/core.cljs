@@ -29,7 +29,7 @@
     (swap! blocks assoc [row column]
            (assoc
              (if impassable
-               (engine/create-impassable-block {:x (* 30 column) :y (* 30 row) :h 30 :w 30})
+               @(engine/create-impassable-block {:x (* 30 column) :y (* 30 row) :h 30 :w 30})
                @(engine/create-square {:x (* 30 column) :y (* 30 row) :h 30 :w 30 :color "#2c677d"}))
              :impassable
              impassable))))
