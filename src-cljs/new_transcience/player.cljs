@@ -21,12 +21,26 @@
           (assoc :vx neue-vx)))))
 
 (defn reset [me]
-  (if (> (:y me) 650)
-    (-> me
-        (assoc :x 50)
-        (assoc :y 50)
-        (assoc :vy 0))
-    me))
+  (let [{:keys [x y]} (or {:x 50 :y 0} @core/start-spot)]
+    ;;reset if the player is out of bounds or finished with the game
+    (if (or (> (:y me) 650) (:finished me))
+      (-> me
+          (assoc :x x)
+          (assoc :y y)
+          (assoc :vy 0)
+          (assoc :vx 0)
+          (assoc :finished false))
+      me)))
+
+(defn check-finish [{:keys [x y] :as me}]
+  (let [end-spot (or {:x 550 :y 400} @core/end-spot)]
+    (if (and (core/close-enough? x (:x end-spot) 20)
+             (core/close-enough? y (:y end-spot) 20))
+      (do 
+        (core/next-level)
+        (assoc me :finished true))
+      me)))
+
 
 (defn gravity [{:keys [vy y] :as me}]
   (let [g 0.8
@@ -98,6 +112,7 @@
       (jump)
       (phase)
       (reset)
+      (check-finish)
       ))
 
 (def player (engine/create-image-character "assets/main-character.png" 0.5 0.5 25 25 12.5))

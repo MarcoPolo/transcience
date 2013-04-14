@@ -11,12 +11,13 @@
 (defroutes app-routes
 
            (route/files "/" {:root "www"})
-           (POST "/saveBlocks" [blocks]
-                 (spit "resources/blocks" blocks)
+           (POST "/saveThings" [things level]
+                 (spit (str "resources/things" "-" level) things)
                  "nice"
                  )
-           (GET "/blocks" []
-                (slurp "resources/blocks"))
+           (GET "/things" [level]
+                (println "getting data for " level)
+                (slurp (str "resources/things-" level)))
 
            (route/not-found "<h1>Page not found</h1>"))
 (def app

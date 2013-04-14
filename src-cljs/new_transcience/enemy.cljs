@@ -18,15 +18,13 @@
 (defn find-player []
   @player/player)
 
-(defn close-enough? [num1 num2 max-dist]
-  (< (Math/abs (- num1 num2)) max-dist))
 
 (defn dir-of? [dir dude1 dude2]
   (let [{:keys [x y]} dude1
         x2 (:x dude2)
         y2 (:y dude2)]
-    (and (close-enough? y y2 50)
-         (close-enough? x x2 80)
+    (and (core/close-enough? y y2 50)
+         (core/close-enough? x x2 80)
          (condp = dir
            :left (< x x2)
            :right (> x x2)
@@ -88,8 +86,8 @@
   (min (map (comp Math/abs (partial - x)) edges)))
 
 (defn efficient-dont-fall [{:keys [acc vx dir] :as entity}]
-  (let [stopping-distance (/ (Math/pow vx 2) (* 2 acc))]
-    (if (close-enough? (distance-from-edge entity) stopping-distance 10)
+  (let [stopping-distance (/ (Math/pow vx 2) (* 2 acc))] 
+    (if (core/close-enough? (distance-from-edge entity) stopping-distance 10)
       ;; They are falling, uh oh lets turn them around so they don't commit suicide
       (assoc entity :dir (->flip-dir dir) :dir-time 0)
       ;; They aren't falling lets let them be
@@ -117,27 +115,24 @@
       (move)
     ))
 
+(def enemy-update-fns (atom []))
+(def enemies (atom []))
 
-<<<<<<< HEAD
-=======
-(declare enemy-update-fns)
 
->>>>>>> forgot to declare some variable
 (defn make-enemy [x y]
   (let [enemy (engine/create-image-character "assets/alien.png" 1 1 17 15 16)]
     (.log js/console "making an enemy at" x y)
     (swap! enemy assoc :acc 0.5 :start-x x :start-y y)
     (swap! enemy assoc :x x :y y)
-    (swap! enemy-update-fns conj #(swap! enemy standard-enemy-routine))))
+    (swap! enemies conj enemy)
+    (condp = type
+      :normal (swap! enemy-update-fns conj #(swap! enemy standard-enemy-routine)))))
       
+;(make-enemy 50 350 :normal)
 
-<<<<<<< HEAD
-=======
-(def enemy-update-fns (atom []))
-
-(def enemy (engine/create-circle {:color "green" :acc 0.5 :start-x 50 :start-y 350}))
->>>>>>> forgot to declare some variable
-(swap! enemy assoc :x 50 :y 350)
+;(def enemy (engine/create-circle {:color "green" :acc 0.5 :start-x 50 :start-y 350}))
+;(swap! enemy assoc :x 50 :y 350)
+;(swap! enemy-update-fns conj #(swap! enemy standard-enemy-routine))
 
 
 (def enemy-loop
@@ -146,7 +141,7 @@
       (update-enemy))
     20))
 
-(swap! enemy-update-fns conj #(swap! enemy standard-enemy-routine))
+
 
 
 

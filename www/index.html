@@ -42,6 +42,10 @@
                       <label for="impassable-block">Impassable Block</label><br>
                       <input type="radio" name="boxType" id="enemy" value="enemy">
                       <label for="enemy">Enemy</label>
+                      <input type="radio" name="boxType" id="start-spot" value="start-spot">
+                      <label for="start-spot">Start-spot</label>
+                      <input type="radio" name="boxType" id="end-spot" value="end-spot">
+                      <label for="end-spot">End-spot</label>
                     </div>
 
                     <div id="level" class="dev">
@@ -52,6 +56,10 @@
                             <option value="4">Level 4</option>
                             <option value="5">Level 5</option>
                         </select>
+
+                        <button id="saveLevel">Save Level</button>
+                        <button id="loadLevel">Load Level</button>
+                        <button id="killAllEnemies">Nuke the enemies</button>
                     </div>
                 </div>
             </div>

@@ -2,7 +2,7 @@
   (:use [jayq.core :only [$ css inner ajax bind]])
   (:use-macros [cljs.core :only [this-as]])
   (:require [clojure.browser.repl :as repl]
-             [new-transcience.engine :as engine]))
+            [new-transcience.engine :as engine]))
 
 (.log js/console "hello world")
 
@@ -76,11 +76,23 @@
       (first (filter #(and (:impassable %) (collision? me %)) blocks-list))
       (first (filter #(collision? me %) blocks-list)))))
 
+(defn close-enough? [num1 num2 max-dist]
+  (< (Math/abs (- num1 num2)) max-dist))
 
 (defn onkeypress [e]
   (swap! input assoc (->key (.-keyCode e)) true)
   (if (->key (.-keyCode e))
     (.preventDefault e)))
+
+
+(def start-spot (atom nil))
+(def end-spot (atom nil))
+(def current-level (atom 1))
+
+(defn next-level []
+  (swap! current-level inc)
+  (new-transcience.level-editor/fetch-level @current-level new-transcience.level-editor/parse-level)
+  )
 
 (set! (.-onkeydown js/document) onkeypress)
 
