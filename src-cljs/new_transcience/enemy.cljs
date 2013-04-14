@@ -118,6 +118,11 @@
     ))
 
 
+<<<<<<< HEAD
+=======
+(declare enemy-update-fns)
+
+>>>>>>> forgot to declare some variable
 (defn make-enemy [x y]
   (let [enemy (engine/create-image-character "assets/alien.png" 1 1 17 15 16)]
     (.log js/console "making an enemy at" x y)
@@ -126,9 +131,14 @@
     (swap! enemy-update-fns conj #(swap! enemy standard-enemy-routine))))
       
 
+<<<<<<< HEAD
+=======
+(def enemy-update-fns (atom []))
+
+(def enemy (engine/create-circle {:color "green" :acc 0.5 :start-x 50 :start-y 350}))
+>>>>>>> forgot to declare some variable
 (swap! enemy assoc :x 50 :y 350)
 
-(def enemy-update-fns (atom []))
 
 (def enemy-loop
   (js/setInterval

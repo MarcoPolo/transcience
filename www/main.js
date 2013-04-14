@@ -20135,7 +20135,6 @@ new_transcience.enemy.make_enemy = function(a, b) {
   })
 };
 cljs.core.swap_BANG_.call(null, new_transcience.enemy.enemy, cljs.core.assoc, "\ufdd0'x", 50, "\ufdd0'y", 350);
-new_transcience.enemy.enemy_update_fns = cljs.core.atom.call(null, cljs.core.PersistentVector.EMPTY);
 new_transcience.enemy.enemy_loop = setInterval(function() {
   for(var a = cljs.core.seq.call(null, cljs.core.deref.call(null, new_transcience.enemy.enemy_update_fns));;) {
     if(a) {
