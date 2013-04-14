@@ -10,7 +10,10 @@
         <div id="game-container">
             <div id="intro" class="color-stripe">
                 <h1 id="game-title">Transcience</h1>
-                <!-- WE PROBABLY NEED AN IMAGE HERE. I'M WORKING ON IT. I PROMISE. -->
+                <div id="image-container">
+                    <img id="image1" src="assets/main-character-web.png" width="100" height="100" title="Tarif the Transient">
+                    <img id="image2" src="assets/main-character-v2-web.png" width="100" height="100" title="Tarif the Transient">
+                </div>
             </div>
 
             <div id="concept" class="color-stripe">
@@ -22,13 +25,9 @@
             </div>
             <div id="how-to-play" class="color-stripe">
                 <h2>Controls</h2>
-                    <div class="text">
-                        <p><span class="bold">Shift</span> to become transient.</p>
-                        <p><span class="bold">Arrow keys</span> to move.</p>
-                        <p><span class="bold">Space</span> to jump.</p>
-                    </div>
-
-                    <!-- I'm in favor of having an image here instead of some shitty text -->
+                <div id="controls-container">
+                    <img src="assets/controls.png" width="500" height="200" title="Controls: Shift to Phase, Space to Jump, Right and Left arrows to move.">
+                </div>
             </div>
 
             <div id="canvas-container" class="color-stripe">
@@ -52,6 +51,31 @@
         <script src="jquery.js"></script>
         <script src="create.js"></script>
         <script src="main.js"></script>
+
+        <script type="text/javascript">
+            var image1 = $("#image1"),
+                image2 = $("#image2"),
+                phase1 = function() {
+                    clearTimeout(this.timeout1);
+
+                    image1.fadeOut("fast");
+                    image2.fadeIn("slow", resetTimeout2);
+                },
+                phase2 = function() {
+                    clearTimeout(this.timeout2);
+
+                    image2.fadeOut("fast");
+                    image1.fadeIn("slow", resetTimeout1);
+                },
+                resetTimeout1 = function() {
+                   this.timeout1 = setTimeout(phase1, 2000);
+                },
+                resetTimeout2 = function() {
+                   this.timeout2 = setTimeout(phase2, 2000);
+                };
+
+            resetTimeout1();
+        </script>
 
     </body>
 </html>
