@@ -119,7 +119,7 @@
 (def enemies (atom []))
 
 
-(defn make-enemy [x y]
+(defn make-enemy [x y type]
   (let [enemy (engine/create-image-character "assets/alien.png" 1 1 17 15 16)]
     (.log js/console "making an enemy at" x y)
     (swap! enemy assoc :acc 0.5 :start-x x :start-y y)

@@ -6,6 +6,10 @@
 
 (def things (atom {}))
 
+(def start-spot (atom nil))
+(def end-spot (atom nil)) 
+
+
 (defn build-demo-level []
   (let [call (ajax "/blocks" {:type "get" })]
     (.done call #(let [server-blocks (vals (cljs.reader/read-string %))]
@@ -28,6 +32,34 @@
 (defn get-level []
   (keyword (.attr ($ "#level select :selected") "value")))
 
+(defn remove-all-from-things [type]
+  (swap! 
+    things   
+    #(select-keys % (for [ [k v] % :when (not= (last v) type)] k))))
+
+(defn make-start-spot [r c]
+  (let [x (* 30 c) y (* 30 r)
+        start-img (engine/create-image-character "assets/startFlag.png" 1 1 0 0 16)]
+    (swap! start-img assoc :x x :y y)
+    (remove-all-from-things :start-spot)
+    (reset! core/start-spot {:x x :y y})
+    (if @start-spot
+      (engine/destroy-shape @start-spot))
+    (reset! 
+      start-spot
+      @start-img)))
+
+(defn make-end-spot [r c]
+  (let [x (* 30 c) y (* 30 r)
+        end-img (engine/create-image-character "assets/endFlag.png" 1 1 0 0 16)]
+    (swap! end-img assoc :x x :y y)
+    (remove-all-from-things :end-spot)
+    (reset! core/end-spot {:x x :y y})
+    (if @end-spot
+      (engine/destroy-shape @end-spot))
+    (reset! 
+      end-spot
+      @end-img)))
 
   
 (defn save-level [level things]
@@ -56,8 +88,8 @@
     (condp = type
       :impassable-block (core/make-block r c true)
       :normal-block     (core/make-block r c false)
-      :start-spot       #()
-      :end-spot         #()
+      :start-spot       (make-start-spot r c)
+      :end-spot         (make-end-spot r c)
       :enemy            (enemy/make-enemy x y :normal)
       nil))
   [x y type])
@@ -87,9 +119,7 @@
         (create-thing)))))
 
 (defn kill-all-enemies []
-  (swap! 
-    things   
-    #(select-keys % (for [ [k v] % :when (not= (last v) :enemy)] k)))
+  (remove-all-from-things :enemy)
   (doseq [enemy @enemy/enemies] (engine/destroy-shape @enemy))
   (reset! enemy/enemies [])
   (reset! enemy/enemy-update-fns []))
@@ -115,4 +145,5 @@
                             (get-level)
                             parse-level)))
                                   
+
 

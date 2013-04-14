@@ -34,6 +34,8 @@
              :impassable
              impassable))))
 
+core/start-spot
+
 (defn ->30th [v]
   (Math/floor (/ v 30)))
 

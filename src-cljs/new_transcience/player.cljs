@@ -21,7 +21,7 @@
           (assoc :vx neue-vx)))))
 
 (defn reset [me]
-  (let [{:keys [x y]} (or {:x 50 :y 0} @core/start-spot)]
+  (let [{:keys [x y]} (or @core/start-spot {:x 50 :y 0} )]
     ;;reset if the player is out of bounds or finished with the game
     (if (or (> (:y me) 650) (:finished me))
       (-> me
@@ -33,7 +33,7 @@
       me)))
 
 (defn check-finish [{:keys [x y] :as me}]
-  (let [end-spot (or {:x 550 :y 400} @core/end-spot)]
+  (let [end-spot (or @core/end-spot {:x 550 :y 400} )]
     (if (and (core/close-enough? x (:x end-spot) 20)
              (core/close-enough? y (:y end-spot) 20))
       (do 
