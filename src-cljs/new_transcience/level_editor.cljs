@@ -1,7 +1,6 @@
-(ns new-transcience.level-editor 
+(ns new-transcience.level-editor
   (:use [jayq.core :only [$ css inner ajax bind]])
   (:require [new-transcience.core :as core]))
-
 
 (defn build-demo-level []
   (let [call (ajax "/blocks" {:type "get" })]
@@ -19,7 +18,7 @@
     "normal"     :normal-block
     :other))
 
-  
+
 
 (defn parse-canvas-click [e]
   (let [x (.-pageX e)

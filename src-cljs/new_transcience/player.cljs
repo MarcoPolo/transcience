@@ -1,4 +1,4 @@
-(ns new-transcience.player 
+(ns new-transcience.player
   (:require [new-transcience.core :as core]
             [new-transcience.engine :as engine]))
 
@@ -57,7 +57,7 @@
 (defn phase [me]
   (let [max-phasing-cycles 20
         cool-down-cycles 20]
-    (if (:phasing me) 
+    (if (:phasing me)
       (if (> max-phasing-cycles (:phasing-count me))
         (update-in me [:phasing-count] inc)
         (assoc me :phasing false :phasing-count 0 :cool-down-count 0))
@@ -97,10 +97,10 @@
       (move core/input? 15 0.5 1)
       (jump)
       (phase)
-      (change-color)
       (reset)
       ))
 
-(def player (engine/create-circle {:color "black" }))
+(def player (engine/create-image-character "assets/main-character.png" 0.5 0.5 25 25 12.5))
+
 ;; Start the player loop
 (def game (js/setInterval #(swap! player update-player) 15))

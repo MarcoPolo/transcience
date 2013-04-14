@@ -5,7 +5,7 @@
             [new-transcience.engine :as engine]))
 
 
-(def ->flip-dir 
+(def ->flip-dir
   {:right :left
    :left :right
    nil :right})
@@ -54,14 +54,14 @@
         acceleration (if chasing 1 acc)
         input? {dir true}]
     (if (> dir-time max-dir-time)
-      (assoc enemy :dir (->flip-dir dir) :dir-time 0) 
-      (-> 
+      (assoc enemy :dir (->flip-dir dir) :dir-time 0)
+      (->
         enemy
         (update-in [:dir-time] inc)
         (player/move input? 4 acceleration 1)))))
 
 (defn dont-fall [{:keys [dir x y vx acc] :as enemy}]
-  (let [ 
+  (let [
         steps-ahead (max 2 (inc (/ vx acc))) ;; How far ahead we should look to make sure the dude doesn't fall
         future-state (last (take steps-ahead (iterate (comp player/gravity move) enemy)))
         future-vy (:vy future-state)]
@@ -76,7 +76,7 @@
   (let [acc 0.5
         left-state (assoc entity :dir :left)
         right-state (assoc entity :dir :right)]
-    (map 
+    (map
       (fn [e]
         (:x
           (first (remove #(= 0 (:vy %)) (iterate (comp player/gravity move) e)))))
@@ -86,7 +86,7 @@
   (min (map (comp Math/abs (partial - x)) edges)))
 
 (defn efficient-dont-fall [{:keys [acc vx dir] :as entity}]
-  (let [stopping-distance (/ (Math/pow vx 2) (* 2 acc))] 
+  (let [stopping-distance (/ (Math/pow vx 2) (* 2 acc))]
     (if (close-enough? (distance-from-edge entity) stopping-distance 10)
       ;; They are falling, uh oh lets turn them around so they don't commit suicide
       (assoc entity :dir (->flip-dir dir) :dir-time 0)
@@ -105,7 +105,7 @@
   (if (or (> x 1000) (> y 1000))
     (assoc enemy :vy 0 :vx 0 :x 50 :y 350 :edges (find-edges enemy ))
     enemy))
-        
+
 (defn standard-enemy-routine [enemy]
   (-> enemy
       (reset)
@@ -114,9 +114,9 @@
       (chase)
       (move)
     ))
-      
 
-(def enemy (engine/create-circle {:color "green" :acc 0.5}))
+
+(def enemy (engine/create-image-character "assets/alien.png" 1 1 17 15 16))
 (swap! enemy assoc :x 50 :y 350)
 
 (def enemy-update-fns (atom []))
