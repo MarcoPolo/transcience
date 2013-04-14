@@ -60,6 +60,13 @@
         (update-in [:dir-time] inc)
         (player/move input? 4 acceleration 1)))))
 
+(defn kill [{:keys [x y] :as enemy}]
+ (let [player (find-player)]
+   (if (core/close-enough? y (:y player) 10)
+    (if (core/close-enough? x (:x player) 10)
+     (player/die player))))
+  enemy)
+
 (defn dont-fall [{:keys [dir x y vx acc] :as enemy}]
   (let [
         steps-ahead (max 2 (inc (/ vx acc))) ;; How far ahead we should look to make sure the dude doesn't fall
@@ -86,7 +93,7 @@
   (min (map (comp Math/abs (partial - x)) edges)))
 
 (defn efficient-dont-fall [{:keys [acc vx dir] :as entity}]
-  (let [stopping-distance (/ (Math/pow vx 2) (* 2 acc))] 
+  (let [stopping-distance (/ (Math/pow vx 2) (* 2 acc))]
     (if (core/close-enough? (distance-from-edge entity) stopping-distance 10)
       ;; They are falling, uh oh lets turn them around so they don't commit suicide
       (assoc entity :dir (->flip-dir dir) :dir-time 0)
@@ -113,6 +120,7 @@
       (dont-stand-still)
       (chase)
       (move)
+      (kill)
     ))
 
 (def enemy-update-fns (atom []))
@@ -127,7 +135,7 @@
     (swap! enemies conj enemy)
     (condp = type
       :normal (swap! enemy-update-fns conj #(swap! enemy standard-enemy-routine)))))
-      
+
 ;(make-enemy 50 350 :normal)
 
 ;(def enemy (engine/create-circle {:color "green" :acc 0.5 :start-x 50 :start-y 350}))

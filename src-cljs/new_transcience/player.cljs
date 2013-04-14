@@ -2,6 +2,8 @@
   (:require [new-transcience.core :as core]
             [new-transcience.engine :as engine]))
 
+(declare player)
+
 (defn move [{:keys [vx x] :as me} input? max-speed acceleration decelartion]
   (let [decelartion (if (:jumping me) 0.1 decelartion)
         vx (or vx 0)
@@ -23,20 +25,21 @@
 (defn reset [me]
   (let [{:keys [x y]} (or @core/start-spot {:x 50 :y 0} )]
     ;;reset if the player is out of bounds or finished with the game
-    (if (or (> (:y me) 650) (:finished me))
+    (if (or (> (:y me) 650) (:finished me) (:killed me))
       (-> me
           (assoc :x x)
           (assoc :y y)
           (assoc :vy 0)
           (assoc :vx 0)
-          (assoc :finished false))
+          (assoc :finished false)
+          (assoc :killed false))
       me)))
 
 (defn check-finish [{:keys [x y] :as me}]
   (let [end-spot (or @core/end-spot {:x 550 :y 400} )]
     (if (and (core/close-enough? x (:x end-spot) 20)
              (core/close-enough? y (:y end-spot) 20))
-      (do 
+      (do
         (core/next-level)
         (assoc me :finished true))
       me)))
@@ -104,6 +107,8 @@
           (assoc me :painted false))
         me))))
 
+(defn die [me]
+  (swap! player assoc :killed true))
 
 (defn update-player [me]
   (-> me
