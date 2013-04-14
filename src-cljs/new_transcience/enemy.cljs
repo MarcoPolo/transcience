@@ -49,6 +49,11 @@
           (assoc enemy :dir (->flip-dir dir) :lost-delay (inc lost-delay))
           (assoc enemy :chasing false :lost-delay 0))))))
 
+(defn sound-when-chase [enemy] 
+  (if (:chasing enemy)
+    (engine/play-sound-once "alienTalk"))
+  enemy)
+
 (defn move [{:keys [dir dir-time chasing acc] :as enemy}]
   (let [max-dir-time 200
         acceleration (if chasing 1 acc)
@@ -112,6 +117,7 @@
       (player/gravity)
       (dont-stand-still)
       (chase)
+      (sound-when-chase)
       (move)
     ))
       

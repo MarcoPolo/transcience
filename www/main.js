@@ -14285,9 +14285,32 @@ cljs.core.ObjMap.fromObject(["\ufdd0'id", "\ufdd0'src"], {"\ufdd0'id":"shipAmbia
 new_transcience.engine.preload = new createjs.LoadQueue;
 new_transcience.engine.preload.installPlugin(createjs.Sound);
 new_transcience.engine.preload.loadManifest(cljs.core.clj__GT_js.call(null, new_transcience.engine.manifest));
-new_transcience.engine.preload.addEventListener("complete", function() {
+new_transcience.engine.sound = cljs.core.atom.call(null, cljs.core.ObjMap.EMPTY);
+new_transcience.engine.sound = createjs.Sound;
+new_transcience.engine.death_sound = function() {
+  return createjs.Sound.play("death")
+};
+new_transcience.engine.sound_finished_QMARK_ = function(a) {
+  return cljs.core.deref.call(null, new_transcience.engine.sound).call(null, a)
+};
+new_transcience.engine.finished_sound = function(a) {
+  return cljs.core.swap_BANG_.call(null, new_transcience.engine.sound, cljs.core.assoc, a, !0)
+};
+new_transcience.engine.play_sound_once = function(a) {
+  return cljs.core.truth_(new_transcience.engine.sound_finished_QMARK_.call(null, a)) ? new_transcience.engine.sound.play(a).addEventListener("complete", new_transcience.engine.finished_sound.call(null, a)) : null
+};
+new_transcience.engine.phase_sound = function() {
+  return createjs.Sound.play("phase")
+};
+new_transcience.engine.switch_sound = function() {
+  return createjs.Sound.play("switch")
+};
+new_transcience.engine.tractor_beam_sound = function() {
+  return createjs.Sound.play("tractorBeam")
+};
+new_transcience.engine.ship_ambiance_sound = function() {
   return createjs.Sound.play("shipAmbiance")
-});
+};
 new_transcience.engine.update_screen_60hz = function() {
   return setInterval(function() {
     return new_transcience.engine.stage.update()
@@ -19954,9 +19977,11 @@ new_transcience.core.colliding_QMARK_ = function(a) {
     return new_transcience.core.collision_QMARK_.call(null, a, b)
   }, b))
 };
-document.onkeydown = function(a) {
-  return cljs.core.swap_BANG_.call(null, new_transcience.core.input, cljs.core.assoc, new_transcience.core.__GT_key.call(null, a.keyCode), !0)
+new_transcience.core.onkeypress = function(a) {
+  cljs.core.swap_BANG_.call(null, new_transcience.core.input, cljs.core.assoc, new_transcience.core.__GT_key.call(null, a.keyCode), !0);
+  return a.preventDefault()
 };
+document.onkeydown = new_transcience.core.onkeypress;
 document.onkeyup = function(a) {
   return cljs.core.swap_BANG_.call(null, new_transcience.core.input, cljs.core.assoc, new_transcience.core.__GT_key.call(null, a.keyCode), !1)
 };
@@ -19972,7 +19997,7 @@ new_transcience.player.move = function(a, b, c, d, e) {
   return cljs.core.truth_(d) ? (b = 0 > b ? (new cljs.core.Keyword("\ufdd0'x")).call(null, d) + (new cljs.core.Keyword("\ufdd0'w")).call(null, d) + (new cljs.core.Keyword("\ufdd0'r")).call(null, a) : (new cljs.core.Keyword("\ufdd0'x")).call(null, d) - (new cljs.core.Keyword("\ufdd0'r")).call(null, a), cljs.core.assoc.call(null, a, "\ufdd0'x", b, "\ufdd0'vx", 0)) : cljs.core.assoc.call(null, c, "\ufdd0'vx", b)
 };
 new_transcience.player.reset = function(a) {
-  return 650 < (new cljs.core.Keyword("\ufdd0'y")).call(null, a) ? cljs.core.assoc.call(null, cljs.core.assoc.call(null, cljs.core.assoc.call(null, a, "\ufdd0'x", 50), "\ufdd0'y", 50), "\ufdd0'vy", 0) : a
+  return 650 < (new cljs.core.Keyword("\ufdd0'y")).call(null, a) ? (new_transcience.engine.death_sound.call(null), cljs.core.assoc.call(null, cljs.core.assoc.call(null, cljs.core.assoc.call(null, a, "\ufdd0'x", 50), "\ufdd0'y", 50), "\ufdd0'vy", 0)) : a
 };
 new_transcience.player.gravity = function(a) {
   a = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a;
@@ -20062,6 +20087,10 @@ new_transcience.enemy.chase = function(a) {
   return cljs.core.truth_((new cljs.core.Keyword("\ufdd0'phasing")).call(null, e)) ? cljs.core.update_in.call(null, a, cljs.core.PersistentVector.fromArray(["\ufdd0'lost-delay"], !0), cljs.core.inc) : cljs.core.truth_(new_transcience.enemy.dir_of_QMARK_.call(null, d, e, a)) ? cljs.core.assoc.call(null, a, "\ufdd0'chasing", !0) : cljs.core.truth_(cljs.core.truth_(c) ? 200 > b : c) ? cljs.core.assoc.call(null, a, "\ufdd0'dir", new_transcience.enemy.__GT_flip_dir.call(null, d), "\ufdd0'lost-delay", 
   b + 1) : cljs.core.assoc.call(null, a, "\ufdd0'chasing", !1, "\ufdd0'lost-delay", 0)
 };
+new_transcience.enemy.sound_when_chase = function(a) {
+  cljs.core.truth_((new cljs.core.Keyword("\ufdd0'chasing")).call(null, a)) && new_transcience.engine.play_sound_once.call(null, "alienTalk");
+  return a
+};
 new_transcience.enemy.move = function(a) {
   var a = cljs.core.seq_QMARK_.call(null, a) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, b = cljs.core._lookup.call(null, a, "\ufdd0'acc", null), c = cljs.core._lookup.call(null, a, "\ufdd0'chasing", null), d = cljs.core._lookup.call(null, a, "\ufdd0'dir-time", null), e = cljs.core._lookup.call(null, a, "\ufdd0'dir", null), b = cljs.core.truth_(c) ? 1 : b, c = cljs.core.PersistentArrayMap.fromArrays([e], [!0]);
   return 200 < d ? cljs.core.assoc.call(null, a, "\ufdd0'dir", new_transcience.enemy.__GT_flip_dir.call(null, e), "\ufdd0'dir-time", 0) : new_transcience.player.move.call(null, cljs.core.update_in.call(null, a, cljs.core.PersistentVector.fromArray(["\ufdd0'dir-time"], !0), cljs.core.inc), c, 4, b, 1)
@@ -20110,7 +20139,7 @@ new_transcience.enemy.reset = function(a) {
   return(c ? c : 1E3 < b) ? cljs.core.assoc.call(null, a, "\ufdd0'vy", 0, "\ufdd0'vx", 0, "\ufdd0'x", 50, "\ufdd0'y", 350, "\ufdd0'edges", new_transcience.enemy.find_edges.call(null, a)) : a
 };
 new_transcience.enemy.standard_enemy_routine = function(a) {
-  return new_transcience.enemy.move.call(null, new_transcience.enemy.chase.call(null, new_transcience.enemy.dont_stand_still.call(null, new_transcience.player.gravity.call(null, new_transcience.enemy.reset.call(null, a)))))
+  return new_transcience.enemy.move.call(null, new_transcience.enemy.sound_when_chase.call(null, new_transcience.enemy.chase.call(null, new_transcience.enemy.dont_stand_still.call(null, new_transcience.player.gravity.call(null, new_transcience.enemy.reset.call(null, a))))))
 };
 new_transcience.enemy.enemy = new_transcience.engine.create_circle.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'color", "\ufdd0'acc"], {"\ufdd0'color":"green", "\ufdd0'acc":0.5}));
 cljs.core.swap_BANG_.call(null, new_transcience.enemy.enemy, cljs.core.assoc, "\ufdd0'x", 50, "\ufdd0'y", 350);

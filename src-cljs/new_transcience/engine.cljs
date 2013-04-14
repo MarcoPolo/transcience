@@ -20,12 +20,36 @@
 
 (def preload (createjs/LoadQueue.))
 (.installPlugin preload (.-Sound js/createjs)) ;; .- for accessing object fields
-;;(.addEventListener preload "complete" doneLoading)
-;;(.addEventListener preload "progress" updateLoading)
 (.loadManifest preload (clj->js manifest))
 
-(.addEventListener preload "complete" #(.play createjs/Sound "shipAmbiance"))
+(def sound (atom {}))
 
+(def sound createjs/Sound)
+
+;(.addEventListener preload "complete" #(.play createjs/Sound "shipAmbiance"))
+
+
+(defn death-sound [] (.play createjs/Sound "death"))
+
+(defn sound-finished? [sound-name]
+  (@sound sound-name))
+
+(defn finished-sound [sound-name]
+  (swap! sound assoc sound-name true))
+
+(defn play-sound-once [sound-name] 
+  (if (sound-finished? sound-name)
+    (let [sound-instance (.play sound sound-name)]
+      (.addEventListener sound-instance "complete" (finished-sound sound-name)))
+    nil))
+
+(defn phase-sound [] (.play createjs/Sound "phase"))
+
+(defn switch-sound [] (.play createjs/Sound "switch"))
+
+(defn tractor-beam-sound [] (.play createjs/Sound "tractorBeam"))
+
+(defn ship-ambiance-sound [] (.play createjs/Sound "shipAmbiance"))
 ;(.play createjs/Sound  "alienTalk")
 
 

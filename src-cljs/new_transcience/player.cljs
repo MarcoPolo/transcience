@@ -22,10 +22,12 @@
 
 (defn reset [me]
   (if (> (:y me) 650)
-    (-> me
-        (assoc :x 50)
-        (assoc :y 50)
-        (assoc :vy 0))
+    (do 
+      (engine/death-sound)
+      (-> me
+          (assoc :x 50)
+          (assoc :y 50)
+          (assoc :vy 0)))
     me))
 
 (defn gravity [{:keys [vy y] :as me}]
