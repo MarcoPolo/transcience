@@ -1,6 +1,7 @@
 (ns new-transcience.level-editor
   (:use [jayq.core :only [$ css inner ajax bind]])
-  (:require [new-transcience.core :as core]))
+  (:require [new-transcience.core :as core]
+            [new-transcience.enemy :as enemy]))
 
 (defn build-demo-level []
   (let [call (ajax "/blocks" {:type "get" })]
@@ -16,6 +17,7 @@
   (condp = (.attr ($ "#itemType input:checked") "value")
     "impassable" :impassable-block
     "normal"     :normal-block
+    "enemy"      :enemy
     :other))
 
 
@@ -26,14 +28,19 @@
         offset (.offset ($ "#demoCanvas"))
         left-offset (.-left offset)
         top-offset (.-top offset)
-        c (core/->30th (- x left-offset))
-        r (core/->30th (- y top-offset))]
+        x (- x left-offset)
+        y (- y top-offset)
+        height (.height ($ "#demoCanvas"))
+        width (.width ($ "#demoCanvas"))
+        c (core/->30th x)
+        r (core/->30th y)]
     (.log js/console "clicked" r c "that is" (get-item-type))
-    (condp = (get-item-type)
-      :impassable-block (core/make-block r c true)
-      :normal-block     (core/make-block r c false)
-      :enemy            #(.log js/console "Should be making an enemy")
-      nil)))
+    (if-not (or (> x width) (> y height))
+      (condp = (get-item-type)
+        :impassable-block (core/make-block r c true)
+        :normal-block     (core/make-block r c false)
+        :enemy            (enemy/make-enemy x y)
+        nil))))
 
 
 (set! (.-onclick js/document) parse-canvas-click)

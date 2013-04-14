@@ -4,12 +4,15 @@
             [new-transcience.player :as player]
             [new-transcience.engine :as engine]))
 
+;; We're going to implement Blackboard Architechture
+(def blackboard (atom []))
+
+(+ 1 2)
 
 (def ->flip-dir
   {:right :left
    :left :right
    nil :right})
-
 
 ;; Access the atom and return the immutable hash map
 (defn find-player []
@@ -17,7 +20,6 @@
 
 (defn close-enough? [num1 num2 max-dist]
   (< (Math/abs (- num1 num2)) max-dist))
-
 
 (defn dir-of? [dir dude1 dude2]
   (let [{:keys [x y]} dude1
@@ -101,9 +103,9 @@
       (assoc enemy :dir (->flip-dir dir) :dir-time 0)
       enemy)))
 
-(defn reset [{:keys [x y] :as enemy}]
+(defn reset [{:keys [x y start-x start-y] :as enemy}]
   (if (or (> x 1000) (> y 1000))
-    (assoc enemy :vy 0 :vx 0 :x 50 :y 350 :edges (find-edges enemy ))
+    (assoc enemy :vy 0 :vx 0 :x start-x :y start-y :edges (find-edges enemy ))
     enemy))
 
 (defn standard-enemy-routine [enemy]
@@ -116,7 +118,14 @@
     ))
 
 
-(def enemy (engine/create-image-character "assets/alien.png" 1 1 17 15 16))
+(defn make-enemy [x y]
+  (let [enemy (engine/create-image-character "assets/alien.png" 1 1 17 15 16)]
+    (.log js/console "making an enemy at" x y)
+    (swap! enemy assoc :acc 0.5 :start-x x :start-y y)
+    (swap! enemy assoc :x x :y y)
+    (swap! enemy-update-fns conj #(swap! enemy standard-enemy-routine))))
+      
+
 (swap! enemy assoc :x 50 :y 350)
 
 (def enemy-update-fns (atom []))
@@ -128,3 +137,8 @@
     20))
 
 (swap! enemy-update-fns conj #(swap! enemy standard-enemy-routine))
+
+
+
+
+
