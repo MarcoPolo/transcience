@@ -38,7 +38,10 @@
             <div id="canvas-container" class="color-stripe">
                 <h2>Let's play!</h2>
                 <div id="center-me">
-                    <canvas width="900" height="600"  id="demoCanvas"></canvas>
+                    <canvas width="900" height="600"  id="demoCanvas" style="display:none"></canvas>
+                    <div id="start-game-container">
+                        <button id="start-game"> Start </button>
+                    </div>
 
                     <div id="itemType" class="dev">
                       <input type="radio" name="boxType" id="normal-block" value="normal">
@@ -76,6 +79,8 @@
         <script src="main.js"></script>
 
         <script type="text/javascript">
+            if (location.hash=="#dev")  $('.dev').show(); 
+
             var image1 = $("#image1"),
                 image2 = $("#image2"),
                 phase1 = function() {

@@ -89,12 +89,18 @@ core/start-spot
 
 (def start-spot (atom nil))
 (def end-spot (atom nil))
-(def current-level (atom 1))
+(def current-level (atom 0))
 
 (defn next-level []
   (swap! current-level inc)
   (new-transcience.level-editor/fetch-level @current-level new-transcience.level-editor/parse-level)
   )
+
+
+(.click ($ :#start-game) #(do 
+                              (.show ($ :#demoCanvas))
+                              (.hide ($ :#start-game))
+                              (next-level)))
 
 (set! (.-onkeydown js/document) onkeypress)
 
