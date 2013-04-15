@@ -119,3 +119,7 @@
 
 ;; Start the player loop
 (def game (js/setInterval #(swap! player update-player) 15))
+
+(add-watch core/start-spot :reset
+           (fn [k r old-state new-state]
+             (die @player)))

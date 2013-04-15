@@ -23,8 +23,8 @@
   (let [{:keys [x y]} dude1
         x2 (:x dude2)
         y2 (:y dude2)]
-    (and (core/close-enough? y y2 50)
-         (core/close-enough? x x2 80)
+    (and (core/close-enough? y y2 80)
+         (core/close-enough? x x2 160)
          (condp = dir
            :left (< x x2)
            :right (> x x2)
@@ -40,7 +40,7 @@
 (defn chase [{:keys [dir chasing lost-delay] :as enemy}]
   (let [player (find-player)
         lost-delay (or lost-delay 0)
-        max-lost-delay 200]
+        max-lost-delay 20]
     (if (:phasing player)
       (update-in enemy [:lost-delay] inc)
       (if (dir-of? dir player enemy)
@@ -64,7 +64,8 @@
  (let [player (find-player)]
    (if (core/close-enough? y (:y player) 10)
     (if (core/close-enough? x (:x player) 10)
-     (player/die player))))
+     (if-not (:phasing player)
+       (player/die player)))))
   enemy)
 
 (defn dont-fall [{:keys [dir x y vx acc] :as enemy}]
