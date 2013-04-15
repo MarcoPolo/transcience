@@ -157,6 +157,7 @@
 (.click ($ :#saveLevel) #(save-level (get-level) @things))
 
 (.click ($ :#loadLevel) (fn [e]
+                          (.log js/console "Getting level" (get-level))
                           (fetch-level 
                             (get-level)
                             parse-level)))

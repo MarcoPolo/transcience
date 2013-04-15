@@ -1,4 +1,5 @@
 (ns new-transcience.player
+  (:use [jayq.core :only [$ css inner ajax bind]])
   (:require [new-transcience.core :as core]
             [new-transcience.engine :as engine]))
 
@@ -88,23 +89,15 @@
 
 (defn change-color [me]
   (let [new-color "red"
-        old-color "black"]
+        old-color "black"
+        easel (:easel-shape me)]
     (if (and (:phasing me) (not (:painted me)))
       (do
-        (-> (:easel-shape me)
-          (.-graphics)
-          (.clear)
-          (.beginFill new-color)
-          (.drawCircle 0 0 (:r me))
-          )
+        (set! (.-image easel) (first ($ :#char-trans)))
         (assoc me :painted true))
       (if (and (not (:phasing me)) (:painted me))
         (do
-          (-> (:easel-shape me)
-            (.-graphics)
-            (.clear)
-            (.beginFill old-color)
-            (.drawCircle 0 0 (:r me)))
+          (set! (.-image easel) (first ($ :#char-normal)))
           (assoc me :painted false))
         me))))
 
@@ -117,6 +110,7 @@
       (move core/input? 15 0.5 1)
       (jump)
       (phase)
+      (change-color)
       (reset)
       (check-finish)
       ))
