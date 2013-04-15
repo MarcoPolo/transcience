@@ -39,8 +39,8 @@
 
 (defn check-finish [{:keys [x y] :as me}]
   (let [end-spot (or @core/end-spot {:x 550 :y 400} )]
-    (if (and (core/close-enough? x (:x end-spot) 20)
-             (core/close-enough? y (:y end-spot) 20))
+    (if (and (core/close-enough? x (:x end-spot) 30)
+             (core/close-enough? y (:y end-spot) 30))
       (do
         (core/next-level)
         (assoc me :finished true))
@@ -115,7 +115,7 @@
       (check-finish)
       ))
 
-(def player (engine/create-image-character "assets/main-character.png" 0.5 0.5 25 25 12.5))
+(def player (engine/create-image-character "assets/main-character.png" 0.5 0.5 25 30 10))
 
 ;; Start the player loop
 (def game (js/setInterval #(swap! player update-player) 15))
