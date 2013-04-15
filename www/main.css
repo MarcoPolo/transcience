@@ -3,7 +3,7 @@ body {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 20px;
     letter-spacing: 2%;
-    line-height: 25px;
+    line-height: 35px;
     color: white;
 }
 
@@ -80,15 +80,21 @@ h2 {
 
 #image1 {
     position: absolute;
-    left: 10%;
+    left: 15%;
     margin-top: 100px;
 }
 
 #image2 {
     position: absolute;
     display: none;
-    right: 10%;
+    right: 20%;
     margin-top: 50px;
+}
+
+#alien {
+    position: relative;
+    top: 5px;
+    margin-left: 5px;
 }
 
 /* Utility classes */
@@ -97,7 +103,7 @@ h2 {
 }
 
 .color-stripe {
-    padding: 75px 100px;
+    padding: 75px 125px;
 }
 
 .text {
@@ -106,6 +112,10 @@ h2 {
 
 .dev {
     display: block !important;
+}
+
+.right-text {
+    text-align: right
 }
 
 @media only screen and (max-width: 1024px) {
