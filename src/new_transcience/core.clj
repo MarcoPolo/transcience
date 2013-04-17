@@ -3,24 +3,17 @@
   (:require [compojure.handler :as handler]
             [compojure.route :as route]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
-
 (defroutes app-routes
 
            (route/files "/" {:root "www"})
            (POST "/saveThings" [things level]
-                 (spit (str "resources/things" "-" level) things)
+                 (spit (str "resources/things" "-" (Integer. level)) things)
                  "nice"
                  )
            (GET "/things" [level]
                 (println "getting data for " level)
-                (slurp (str "resources/things-" level)))
+                (slurp (str "resources/things-" (Integer. level))))
 
            (route/not-found "<h1>Page not found</h1>"))
 (def app
   (handler/site app-routes))
-
-
