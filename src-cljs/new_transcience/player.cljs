@@ -73,18 +73,21 @@
       me)))
 
 
-(defn phase [me]
+(defn phase [{:keys [x y starting-phasing-spot] :as me}]
   (let [max-phasing-cycles 20
         cool-down-cycles 20]
     (if (:phasing me)
       (if (> max-phasing-cycles (:phasing-count me))
         (update-in me [:phasing-count] inc)
-        (assoc me :phasing false :phasing-count 0 :cool-down-count 0))
+        (if (core/colliding? (assoc me :phasing false))
+          (assoc me :x (first starting-phasing-spot) :y (second starting-phasing-spot) :phasing false :phasing-count 0 :cool-down-count 0)
+          (assoc me :phasing false :phasing-count 0 :cool-down-count 0)))
       (if (> cool-down-cycles (:cool-down-count me))
         (update-in me [:cool-down-count] inc)
         (if (core/input? :phase)
-          (assoc me :phasing true :cool-down-count 0 :phasing-count 0)
+          (assoc me :starting-phasing-spot [x y] :phasing true :cool-down-count 0 :phasing-count 0)
           me)))))
+
 
 
 (defn change-color [me]
@@ -123,3 +126,8 @@
 (add-watch core/start-spot :reset
            (fn [k r old-state new-state]
              (die @player)))
+
+(comment 
+
+
+  )
