@@ -102,9 +102,9 @@
       entity)))
 
 (defn dont-stand-still [{:keys [dir vx] :as enemy}]
-  (let [steps-ahead 5
-        future-states (map :vx (take steps-ahead (iterate move enemy)))
-        zero-movement (reduce #(and %1 (zero? %2)) future-states)]
+  (let [steps-ahead 1
+        future-state (move enemy)
+        zero-movement (zero? (:vx enemy))]
     (if zero-movement
       (assoc enemy :dir (->flip-dir dir) :dir-time 0)
       enemy)))
