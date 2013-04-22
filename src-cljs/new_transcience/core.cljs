@@ -106,11 +106,18 @@ core/start-spot
 (def end-spot (atom nil))
 (def current-level (atom 0))
 
+;; A simple mapping between the index of the current level to a level hash
+(def levels
+  (if 
+    (= "#levels" (first (.split (.-hash js/location) "=")))
+    (apply conj [0] (js->clj (.split (last (.split (.-hash js/location) "=")) ",")))
+    [0 "f27a3" "a1dfe" 1 2 3 4 5]))
+
 (defn next-level []
   (swap! current-level inc)
-  (if (> 5 @current-level)
+  (if (> (count levels) @current-level)
     (new-transcience.level-editor/fetch-level 
-      (new-transcience.level-editor/levels @current-level) 
+      (levels @current-level) 
       new-transcience.level-editor/parse-level)
     (new-transcience.level-editor/fetch-random-level 
       new-transcience.level-editor/parse-level)))

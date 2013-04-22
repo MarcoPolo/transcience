@@ -10,7 +10,12 @@
 (def end-spot (atom nil)) 
 
 ;; A simple mapping between the index of the current level to a level hash
-(def levels [0 1 2 3 4 5])
+(def levels
+  (if 
+    (= "#levels" (first (.split (.-hash js/location) "=")))
+    (js->clj (.split (last (.split (.-hash js/location) "=")) ","))
+    [0 "f27a3" "a1dfe" 1 2 3 4 5]))
+
 
 
 (defn get-item-type []
