@@ -148,9 +148,10 @@
   (js/setInterval
     #(doseq [update-enemy @enemy-update-fns]
       (update-enemy))
-    20))
+    30))
 
 
+;(js/clearInterval enemy-loop)
 
 
 

@@ -9,6 +9,9 @@
 (def start-spot (atom nil))
 (def end-spot (atom nil)) 
 
+;; A simple mapping between the index of the current level to a level hash
+(def levels [0 1 2 3 4 5])
+
 
 (defn get-item-type []
   (condp = (.attr ($ "#itemType input:checked") "value")
@@ -20,7 +23,7 @@
     :other))
 
 (defn get-level []
-  (keyword (.attr ($ "#level select :selected") "value")))
+  (keyword (.val ($ :#levelHash))))
 
 (defn remove-all-from-things [type]
   (swap! 
@@ -56,15 +59,29 @@
       @end-img)))
 
   
-(defn save-level [level things]
-  (ajax "/saveThings" {:type "post" :data (clj->js {:things (JSON.stringify (clj->js things))
-                                                    :level level})}))
+(defn save-level [things]
+  (.log js/console "saving:" things)
+  (let [call (ajax "/saveThings" {:type "post" :data (clj->js {:things (JSON.stringify (clj->js things))})})]
+    (.done call #(.val ($ :#levelHash) %))))
 
 (declare clean-level)
 
+(defn fetch-random-level [callback]
+  (clean-level)
+  (let [call (ajax "/random" {:type "get"})]
+    (.done call #(callback
+                   (let [level-info (js->clj (JSON.parse %))
+                         things (level-info "things")
+                         hash (level-info "hash")]
+                     (.log js/console "fetched " hash)
+                     (.val ($ :#levelHash) hash)
+                     (map 
+                       (fn [[a b c]] [a b (keyword c)])
+                       (vals things)))))))
 
 (defn fetch-level [level callback]
   (clean-level)
+  (.val ($ :#levelHash) (clj->js level))
   (let [call (ajax "/things" {:type "get" :data {:level level}})]
     (.done call #(callback
                    (map 
@@ -91,7 +108,6 @@
       :enemy            (enemy/make-enemy x y :normal)
       nil))
   [x y type])
-
 
 (defn parse-level [things]
   (doseq [thing things]
@@ -154,7 +170,11 @@
 
 (.click ($ :#killAllEnemies) kill-all-enemies)
 
-(.click ($ :#saveLevel) #(save-level (get-level) @things))
+(.click ($ :#saveLevel) #(save-level @things))
+
+(.click ($ :#randLevel) (fn [e]
+                          (.log js/console "Getting random level")
+                          (fetch-random-level parse-level)))
 
 (.click ($ :#loadLevel) (fn [e]
                           (.log js/console "Getting level" (get-level))

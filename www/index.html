@@ -2,7 +2,7 @@
     <head>
         <link rel="stylesheet" type="text/css" href="reset.css">
         <link rel="stylesheet" type="text/css" href="main.css">
-        <title>Transcience - Physics redefined</title>
+        <title>Transience - Physics redefined</title>
         <img id="char-trans" src="assets/main-character-trans.png">
         <img id="char-normal" src="assets/main-character.png">
     </head>
@@ -11,7 +11,8 @@
 
         <div id="game-container">
             <div id="intro" class="color-stripe">
-                <h1 id="game-title">Transcience</h1>
+              <a href="https://github.com/marcopolo/transcience"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+                <h1 id="game-title">Transience</h1>
                 <div id="image-container">
                     <img id="image1" src="assets/main-character-web.png" width="100" height="100" title="Tarif the Transient">
                     <img id="image2" src="assets/main-character-v2-web.png" width="100" height="100" title="Tarif the Transient">
@@ -21,11 +22,13 @@
             <div id="concept" class="color-stripe">
                 <h2>Concepts</h2>
                 <p class="text">Let's begin with the concept of transcience. When you are transcient, you:</p>
-                <p>1. Phase into a different dimension.</p>
-                <p>2. Maintain the velocity you had in the previous dimension.</p><br>
+                <p>&nbsp;&nbsp; 1. Keep your existing momentum.</p>
+                <p>&nbsp;&nbsp; 2. Not affected by worldy forces such as Gravity and Friction</p><br>
+                <p class="text">You can also use the builtin level editor to make your own levels and share them with the world!</p>
+                <br/>
                 <p><span class="bold">Protip #1</span>: Avoid the green aliens.<img id="alien" src="assets/alien.png" width="32" height="32"></p>
-                <p><span class="bold">Protip #2</span>: If you stop phasing behind a block, you'll be pushed out towards the starting portal.<p><br>
-                <p class="right-text">Happy phasing! - &hearts; from the Transcience team</p>
+                <p><span class="bold">Protip #2</span>: If you stop phasing behind a block, you'll be pushed to where you started phasing.
+                <p class="right-text">Happy phasing! - &hearts; from the Transience team</p>
 
             </div>
             <div id="how-to-play" class="color-stripe">
@@ -57,17 +60,14 @@
                     </div>
 
                     <div id="level" class="dev">
-                        <select id="level">
-                            <option value="1">Level 1</option>
-                            <option value="2">Level 2</option>
-                            <option value="3">Level 3</option>
-                            <option value="4">Level 4</option>
-                            <option value="5">Level 5</option>
-                        </select>
+                        <input type="TEXT" id="levelHash" placeholder="Level Hash"> </input>
+                        <button id="loadLevel">Load Level</button>
 
                         <button id="saveLevel">Save Level</button>
-                        <button id="loadLevel">Load Level</button>
+                        <button id="randLevel">Random Level</button>
                         <button id="killAllEnemies">Nuke the enemies</button>
+
+
                     </div>
                 </div>
             </div>
@@ -79,7 +79,7 @@
         <script src="main.js"></script>
 
         <script type="text/javascript">
-            if (location.hash=="#dev")  $('.dev').show(); 
+            //if (location.hash=="#dev")  $('.dev').show(); 
 
             var image1 = $("#image1"),
                 image2 = $("#image2"),

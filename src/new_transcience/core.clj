@@ -17,7 +17,7 @@
   (seq (filter #(= hash (.getName %)) (file-seq directory))))
 
 (defn save-level! [things]
-  (let [hash (hash-str (str (rand)))]
+  (let [hash (subs (hash-str (str (rand))) 59)]
     (if (hash-exists? hash)
       (save-level! things)
       (do 
@@ -31,8 +31,12 @@
 (defroutes app-routes
 
            (route/files "/" {:root "www"})
-           (POST "/saveThings" [things level]
+           (POST "/saveThings" [things]
+                 (println "things are" things)
                  (save-level! things))
+           (GET "/random" [] 
+              (let [level (rand-nth (rest (file-seq directory)))]
+                (str "{ \"hash\":\"" (.getName level) "\", \"things\":" (slurp (.getPath level)) "}")))
            (GET "/things" [level]
                 (if (valid-hash? level)
                   (slurp (str directory-name "/" level))
@@ -40,4 +44,6 @@
            (route/not-found "<h1>Page not found</h1>"))
 (def app
   (handler/site app-routes))
+
+           (file-seq directory)
 

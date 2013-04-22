@@ -1,6 +1,6 @@
 (defproject new-transcience "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+  :description "Small and fun Physics game"
+  :url "http://transga.me"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :cljsbuild

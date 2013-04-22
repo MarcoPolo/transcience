@@ -77,7 +77,6 @@ h2 {
 
 #itemType {
     margin-top: 30px;
-    display: none;
 }
 
 #controls-container {
@@ -125,7 +124,6 @@ h2 {
 }
 
 .dev {
-    display:none;
 }
 
 .right-text {

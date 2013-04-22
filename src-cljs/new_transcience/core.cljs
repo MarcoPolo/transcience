@@ -108,8 +108,12 @@ core/start-spot
 
 (defn next-level []
   (swap! current-level inc)
-  (new-transcience.level-editor/fetch-level @current-level new-transcience.level-editor/parse-level)
-  )
+  (if (> 5 @current-level)
+    (new-transcience.level-editor/fetch-level 
+      (new-transcience.level-editor/levels @current-level) 
+      new-transcience.level-editor/parse-level)
+    (new-transcience.level-editor/fetch-random-level 
+      new-transcience.level-editor/parse-level)))
 
 
 (.click ($ :#start-game) #(do 
