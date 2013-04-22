@@ -5,6 +5,7 @@
 
 (declare player)
 
+
 (defn move [{:keys [vx x] :as me} input? max-speed acceleration decelartion]
   (let [decelartion (if (:jumping me) 0.1 decelartion)
         vx (or vx 0)
@@ -80,7 +81,8 @@
       (if (> max-phasing-cycles (:phasing-count me))
         (update-in me [:phasing-count] inc)
         (if (core/colliding? (assoc me :phasing false))
-          (assoc me :x (first starting-phasing-spot) :y (second starting-phasing-spot) :phasing false :phasing-count 0 :cool-down-count 0)
+          ;(assoc me :x (first starting-phasing-spot) :y (second starting-phasing-spot) :phasing false :phasing-count 0 :cool-down-count cool-down-cycles)
+          (core/first-non-colliding starting-phasing-spot (assoc me :phasing false :phasing-count 0 :cool-down-count 0))
           (assoc me :phasing false :phasing-count 0 :cool-down-count 0)))
       (if (> cool-down-cycles (:cool-down-count me))
         (update-in me [:cool-down-count] inc)
@@ -128,6 +130,8 @@
              (die @player)))
 
 (comment 
+
+  (first (for [x (range 10) y (range 10) :when (every? even? [x y])] [x y]))
 
 
   )

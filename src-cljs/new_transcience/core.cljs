@@ -78,6 +78,21 @@ core/start-spot
       (first (filter #(and (:impassable %) (collision? me %)) blocks-list))
       (first (filter #(collision? me %) blocks-list)))))
 
+(defn towards [x dest-x]
+  (cond 
+    (= x dest-x) x
+    (< x dest-x) (inc x)
+    :else (dec x)))
+
+(defn straight-path [[dest-x dest-y] {:keys [x y] :as me}]
+  (assoc me :x (towards x dest-x) :y (towards y dest-y)))
+
+(defn first-non-colliding [start-vec me]
+  (let [spot (first (remove colliding? (iterate (partial straight-path start-vec) me)))]
+    (.log js/console "Going back to spot" (clj->js spot)  )
+    spot))
+
+
 (defn close-enough? [num1 num2 max-dist]
   (< (Math/abs (- num1 num2)) max-dist))
 
