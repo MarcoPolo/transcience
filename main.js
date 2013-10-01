@@ -20291,7 +20291,7 @@ new_transcience.level_editor.fetch_level = function(a, b) {
 new_transcience.level_editor.fetch_static_level = function(a, b) {
   new_transcience.level_editor.clean_level.call(null);
   jayq.core.$.call(null, "\ufdd0'#levelHash").val(cljs.core.clj__GT_js.call(null, a));
-  return jayq.core.ajax.call(null, [cljs.core.str("/things"), cljs.core.str(a)].join(""), cljs.core.ObjMap.fromObject(["\ufdd0'type"], {"\ufdd0'type":"get"})).done(function(a) {
+  return jayq.core.ajax.call(null, [cljs.core.str("/things/"), cljs.core.str(a)].join(""), cljs.core.ObjMap.fromObject(["\ufdd0'type"], {"\ufdd0'type":"get"})).done(function(a) {
     return b.call(null, cljs.core.map.call(null, function(a) {
       var b = cljs.core.nth.call(null, a, 0, null), c = cljs.core.nth.call(null, a, 1, null), a = cljs.core.nth.call(null, a, 2, null);
       return cljs.core.PersistentVector.fromArray([b, c, cljs.core.keyword.call(null, a)], !0)
