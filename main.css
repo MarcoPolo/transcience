@@ -1,0 +1,137 @@
+body {
+    /* background: #F1F1F1 repeat right top; */
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 20px;
+    letter-spacing: 2%;
+    line-height: 35px;
+    color: white;
+}
+
+
+h1, h2, h3 {
+    text-align: center;
+}
+
+h2 {
+    font-size: 30px;
+    line-height: 30px;
+}
+
+#intro {
+    background: #FF8A10 repeat right top;
+}
+
+#game-title {
+    position: relative;
+    line-height: 60px;
+    font-size: 60px;
+    font-weight: bold;
+    /* text-shadow: 0 2px #fff; */
+}
+
+#start-game-container {
+    text-align:center;
+}
+#start-game {
+    height: 100px;
+    width: 200px;
+    font-size: 50px;
+    border-radius: 5px;
+    background: whitesmoke;
+}
+
+
+
+#concept {
+    background: #228DFF repeat right top;
+}
+
+#how-to-play {
+    background: #5a62d2 repeat right top;
+}
+
+#game-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+#canvas-container {
+    background: #444 repeat right top;
+}
+
+#demoCanvas {
+    background: #EEE repeat right top;
+    border-radius: 5px;
+    -moz-box-shadow:  0 0 10px 1px #CCC;
+    -webkit-box-shadow:  0 0 10px 1px #CCC;
+    box-shadow:  0 0 20px 1px #CCC;
+}
+
+#center-me {
+    margin: 40px auto;
+    width: 900px;
+}
+
+#itemType {
+    margin-top: 30px;
+}
+
+#controls-container {
+    width: 500px;
+    padding: 50px;
+    margin: 40px auto 0 auto;
+    background: #1D2589;
+    border-radius: 5px;
+}
+
+#image-container {
+    height: 200px;
+}
+
+#image1 {
+    position: absolute;
+    left: 15%;
+    margin-top: 100px;
+}
+
+#image2 {
+    position: absolute;
+    display: none;
+    right: 20%;
+    margin-top: 50px;
+}
+
+#alien {
+    position: relative;
+    top: 5px;
+    margin-left: 5px;
+}
+
+/* Utility classes */
+.bold {
+    font-weight: bold;
+}
+
+.color-stripe {
+    padding: 75px 125px;
+}
+
+.text {
+    margin-top: 40px;
+}
+
+.dev {
+}
+
+.right-text {
+    text-align: right
+}
+
+@media only screen and (max-width: 1024px) {
+    .color-stripe {
+        padding: 75px 4%;
+    }
+}

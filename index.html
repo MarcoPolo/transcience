@@ -1,0 +1,110 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="reset.css">
+        <link rel="stylesheet" type="text/css" href="main.css">
+        <title>Transience - Physics redefined</title>
+        <img id="char-trans" src="assets/main-character-trans.png">
+        <img id="char-normal" src="assets/main-character.png">
+    </head>
+
+    <body>
+
+        <div id="game-container">
+            <div id="intro" class="color-stripe">
+              <a href="https://github.com/marcopolo/transcience"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+                <h1 id="game-title">Transience</h1>
+                <div id="image-container">
+                    <img id="image1" src="assets/main-character-web.png" width="100" height="100" title="Tarif the Transient">
+                    <img id="image2" src="assets/main-character-v2-web.png" width="100" height="100" title="Tarif the Transient">
+                </div>
+            </div>
+
+            <div id="concept" class="color-stripe">
+                <h2>Concepts</h2>
+                <p class="text">Let's begin with the concept of transcience. When you are transcient, you:</p>
+                <p>&nbsp;&nbsp; 1. Keep your existing momentum.</p>
+                <p>&nbsp;&nbsp; 2. Not affected by worldy forces such as Gravity and Friction</p><br>
+                <p class="text">You can also use the builtin level editor to make your own levels and share them with the world!</p>
+                <br/>
+                <p><span class="bold">Protip #1</span>: Avoid the green aliens.<img id="alien" src="assets/alien.png" width="32" height="32"></p>
+                <p><span class="bold">Protip #2</span>: If you stop phasing behind a block, you'll be pushed to where you started phasing.
+                <p class="right-text">Happy phasing! - &hearts; from the Transience team</p>
+
+            </div>
+            <div id="how-to-play" class="color-stripe">
+                <h2>Controls</h2>
+                <div id="controls-container">
+                    <img src="assets/controls.png" width="500" height="200" title="Controls: Shift to Phase, Space to Jump, Right and Left arrows to move.">
+                </div>
+            </div>
+
+            <div id="canvas-container" class="color-stripe">
+                <h2>Let's play!</h2>
+                <div id="center-me">
+                    <canvas width="900" height="600"  id="demoCanvas" style="display:none"></canvas>
+                    <div id="start-game-container">
+                        <button id="start-game"> Start </button>
+                    </div>
+
+                    <div id="itemType" class="dev">
+                      <input type="radio" name="boxType" id="normal-block" value="normal">
+                      <label for="normal-block">Normal Block</label><br>
+                      <input type="radio" name="boxType" id="impassable-block" value="impassable">
+                      <label for="impassable-block">Impassable Block</label><br>
+                      <input type="radio" name="boxType" id="enemy" value="enemy">
+                      <label for="enemy">Enemy</label>
+                      <input type="radio" name="boxType" id="start-spot" value="start-spot">
+                      <label for="start-spot">Start-spot</label>
+                      <input type="radio" name="boxType" id="end-spot" value="end-spot">
+                      <label for="end-spot">End-spot</label>
+                    </div>
+
+                    <div id="level" class="dev">
+                        <input type="TEXT" id="levelHash" placeholder="Level Hash"> </input>
+                        <button id="loadLevel">Load Level</button>
+
+                        <button id="saveLevel">Save Level</button>
+                        <button id="randLevel">Random Level</button>
+                        <button id="killAllEnemies">Nuke the enemies</button>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- scripts -->
+        <script src="jquery.js"></script>
+        <script src="create.js"></script>
+        <script src="main.js"></script>
+
+        <script type="text/javascript">
+            //if (location.hash=="#dev")  $('.dev').show(); 
+
+            var image1 = $("#image1"),
+                image2 = $("#image2"),
+                phase1 = function() {
+                    clearTimeout(this.timeout1);
+
+                    image1.fadeOut("fast");
+                    image2.fadeIn("slow", resetTimeout2);
+                },
+                phase2 = function() {
+                    clearTimeout(this.timeout2);
+
+                    image2.fadeOut("fast");
+                    image1.fadeIn("slow", resetTimeout1);
+                },
+                resetTimeout1 = function() {
+                   this.timeout1 = setTimeout(phase1, 2000);
+                },
+                resetTimeout2 = function() {
+                   this.timeout2 = setTimeout(phase2, 2000);
+                };
+
+            resetTimeout1();
+        </script>
+
+    </body>
+</html>
+
