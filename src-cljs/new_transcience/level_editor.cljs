@@ -93,6 +93,15 @@
                      (fn [[a b c]] [a b (keyword c)]) 
                      (vals (js->clj (JSON.parse %))))))))
 
+(defn fetch-static-level [level callback]
+  (clean-level)
+  (.val ($ :#levelHash) (clj->js level))
+  (let [call (ajax (str "/things" level) {:type "get"})]
+    (.done call #(callback
+                   (map 
+                     (fn [[a b c]] [a b (keyword c)]) 
+                     (vals (js->clj (JSON.parse %))))))))
+
 (defn save-thing [[x y type]]
   (let [c (core/->30th x)
         r (core/->30th y)]

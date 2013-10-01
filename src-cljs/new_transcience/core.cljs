@@ -116,7 +116,7 @@ core/start-spot
 (defn next-level []
   (swap! current-level inc)
   (if (> (count levels) @current-level)
-    (new-transcience.level-editor/fetch-level 
+    (new-transcience.level-editor/fetch-static-level 
       (levels @current-level) 
       new-transcience.level-editor/parse-level)
     (new-transcience.level-editor/fetch-random-level 
