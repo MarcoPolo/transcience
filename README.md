@@ -1,13 +1,11 @@
-# new-transcience
+# Transcience
 
-A Clojure library designed to ... well, that part is up to you.
+A Physics game written in Clojurescript
 
 ## Usage
 
-FIXME
+Check it out at http://marcopolo.io/transcience/
 
 ## License
-
-Copyright © 2013 FIXME
 
 Distributed under the Eclipse Public License, the same as Clojure.

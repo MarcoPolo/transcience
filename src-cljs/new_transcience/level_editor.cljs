@@ -96,7 +96,7 @@
 (defn fetch-static-level [level callback]
   (clean-level)
   (.val ($ :#levelHash) (clj->js level))
-  (let [call (ajax (str "/things" level) {:type "get"})]
+  (let [call (ajax (str "levels/" level) {:type "get"})]
     (.done call #(callback
                    (map 
                      (fn [[a b c]] [a b (keyword c)]) 
